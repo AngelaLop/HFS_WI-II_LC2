@@ -15,8 +15,7 @@ Output:
 /*==================================================
               0: Program set up
 ==================================================*/
-version 17
-drop _all
+
 
 global path "C:\Users\WB585318\WBG\Javier Romero - Panama\HFPS\Analysis"
 global data "C:\Users\WB585318\WBG\LAC High Frequency Phone Survey v.2 - WB Group - PE Shared Folder\Data"
@@ -57,7 +56,107 @@ g male   = (v03_04==1)
 * nivel educativo 
 tab v03_09a, g(v309_)
 
-g primary_less = (v309_1==1) | (v309_2==1) | (v309_3==1)
+ if inlist(`country',503,505,510,570)  {
+g primary_less = (v309_1==1) | (v309_2==1) 
+label variable primary_less "Primary or less educated"
+
+g secondary =  (v309_3==1) | (v309_4==1)
+label variable secondary "Secondary education"
+
+g terciary = (v309_5==1) 
+label variable terciary "Terciary education"
+
+
+ tab v03_10a, g(v0310a_)
+
+g hh_primary_less = (v0310a_1==1) | (v0310a_2==1) | (v0310a_3==1)
+label variable primary_less "Primary or less educated"
+
+g hh_secondary = (v0310a_4==1) | (v0310a_5==1) | (v0310a_6==1)
+label variable secondary "Secondary education"
+
+g hh_terciary = (v0310a_7==1) 
+label variable terciary "Terciary education" 
+ 
+ }
+
+  if inlist(`country',501)  {
+g primary_less = (v309_1==1) | (v309_2==1) 
+label variable primary_less "Primary or less educated"
+
+g secondary =  (v309_3==1) | (v309_4==1)
+label variable secondary "Secondary education"
+
+g terciary = (v309_5==1) 
+label variable terciary "Terciary education"
+
+
+ tab v03_10a, g(v0310a_)
+
+g hh_primary_less = (v0310a_1==1) | (v0310a_2==1) | (v0310a_3==1)
+label variable primary_less "Primary or less educated"
+
+g hh_secondary = (v0310a_4==1) | (v0310a_5==1) | (v0310a_6==1)
+label variable secondary "Secondary education"
+
+g hh_terciary = (v0310a_7==1) 
+label variable terciary "Terciary education" 
+ 
+ }
+
+* Santa Lucia, Dominica  
+ if inlist(`country',758,767)  {
+g primary_less = (v309_1==1) | (v309_2==1) 
+label variable primary_less "Primary or less educated"
+
+g secondary =  (v309_3==1) | (v309_4==1)
+label variable secondary "Secondary education"
+
+g terciary = (v309_5==1) | (v309_6==1) | (v309_7==1)
+label variable terciary "Terciary education"
+
+
+ tab v03_10a, g(v0310a_)
+
+g hh_primary_less = (v0310a_1==1) | (v0310a_2==1) 
+label variable primary_less "Primary or less educated"
+
+g hh_secondary = (v0310a_3==1) | (v0310a_4==1) 
+label variable secondary "Secondary education"
+
+g hh_terciary =  (v0310a_5==1) | (v0310a_6==1) | (v0310a_7==1) 
+label variable terciary "Terciary education" 
+ 
+ } 
+ 
+* Jamaica, Guyana 
+ if inlist(`country',876,592)  {
+g primary_less = (v309_1==1) | (v309_2==1) | (v309_3==1) 
+label variable primary_less "Primary or less educated"
+
+g secondary =   (v309_4==1) | (v309_5==1)
+label variable secondary "Secondary education"
+
+g terciary = (v309_6==1) | (v309_7==1) | (v309_8==1)
+label variable terciary "Terciary education"
+
+
+ tab v03_10a, g(v0310a_)
+
+g hh_primary_less = (v0310a_1==1) | (v0310a_2==1) (v0310a_3==1) | 
+label variable primary_less "Primary or less educated"
+
+g hh_secondary = (v0310a_4==1) | (v0310a_5==1) 
+label variable secondary "Secondary education"
+
+g hh_terciary =   (v0310a_6==1) | (v0310a_7==1) | (v0310a_8==1) 
+label variable terciary "Terciary education" 
+ 
+ } 
+ 
+ 
+if  inlist(`country',502,504,506,507,509,520,540,591,593,595,598,809)  {
+ g primary_less = (v309_1==1) | (v309_2==1) | (v309_3==1)
 label variable primary_less "Primary or less educated"
 
 g secondary = (v309_4==1) | (v309_5==1) | (v309_6==1)
@@ -66,6 +165,8 @@ label variable secondary "Secondary education"
 g terciary = (v309_7==1) | (v309_8==1) 
 label variable terciary "Terciary education"
 
+ 
+ 
 * nivel educativo HH head 
 
  tab v03_10a, g(v0310a_)
@@ -78,7 +179,7 @@ label variable secondary "Secondary education"
 
 g hh_terciary = (v0310a_7==1) | (v0310a_8==1) 
 label variable terciary "Terciary education" 
- 
+ }
  
 * Area 
 tab v03_08a, m

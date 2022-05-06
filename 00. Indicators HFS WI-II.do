@@ -18,12 +18,12 @@ Output:
 version 17
 drop _all
 
-global path "C:\Users\WB585318\WBG\Javier Romero - Panama\HFPS\Analysis"
-global data "C:\Users\WB585318\WBG\LAC High Frequency Phone Survey v.2 - WB Group - PE Shared Folder\Data"
-global dos "$path\do-files"
+global path "C:\Users\WB585318\WBG\Javier Romero - Panama\HFPS\LC2 presentation Ph2w2"
+global data "$path\data"
+global dos  "C:\Users\WB585318\OneDrive - Universidad de los Andes\WB\Git_repositories\HFS_WI-II_LC2"
 global results "$path\results"
-global w1 "$data\Wave 1"
-global w2 "$data\Wave 2"
+global w1 	"$data\Wave 1"
+global w2 	"$data\Wave 2"
 
 
 /*==================================================
@@ -38,7 +38,7 @@ foreach country of local countries {
 use "$w1\`country'_PH2W2_CP_Casos"
 include "$dos\01. variables HFS WI.do"
 
-merge 1:1 folio using "$w1\`country'_PH2W2_CP_Ninos"
+merge 1:1 folio using "$w1\\`country'_PH2W2_CP_Ninos"
 local wave w1
 
 
@@ -52,12 +52,11 @@ local wave w1
 local countries 501 502 503 504 505 506 507 509 510 520 540 570 591 592 593 595 598 758 767 809 876
 
 foreach country of local countries {
-use "$w2\`country'_PH2W2_CP_Casos"
-include "$dos\01. variables HFS WI.do"
-
-merge 1:1 folio using "$w2\`country'_PH2W2_CP_Ninos"
+use "$w2\\`country'_PH2W2_CP_Casos", replace 
+ 
+merge 1:1 folio using "$w2\\`country'_PH2W2_CP_Ninos", force 
+include "$dos\\02. variables HFS WII.do"
 local wave w2
-
 
 }
 

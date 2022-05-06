@@ -15,8 +15,7 @@ Output:
 /*==================================================
               0: Program set up
 ==================================================*/
-version 17
-drop _all
+
 
 global path "C:\Users\WB585318\WBG\Javier Romero - Panama\HFPS\Analysis"
 global data "C:\Users\WB585318\WBG\LAC High Frequency Phone Survey v.2 - WB Group - PE Shared Folder\Data"
