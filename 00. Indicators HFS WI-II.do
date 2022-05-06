@@ -26,21 +26,28 @@ global w1 	"$data\Wave 1"
 global w2 	"$data\Wave 2"
 
 
+
+preserve				
+	tempfile tablas
+	tempname ptablas
+	postfile `ptablas' str25(Country Wave Module Variable Indicator Cut) Value using `tablas', replace
+
 /*==================================================
               1: first wave 
 ==================================================*/
-
-
 
 local countries 501 502 503 504 505 506 507 509 510 520 540 570 591 592 593 595 598 758 767 809 876
 
 foreach country of local countries {
 use "$w1\`country'_PH2W2_CP_Casos"
-include "$dos\01. variables HFS WI.do"
-
 merge 1:1 folio using "$w1\\`country'_PH2W2_CP_Ninos"
+include "$dos\01. variables HFS WI.do"
 local wave w1
 
+local module income
+local module financial_stress
+local mudule food_security
+local module education 
 
 }
 
@@ -58,5 +65,20 @@ merge 1:1 folio using "$w2\\`country'_PH2W2_CP_Ninos", force
 include "$dos\\02. variables HFS WII.do"
 local wave w2
 
+
+local module income
+local module financial_stress
+local mudule food_security
+local module education 
+
 }
 
+
+/*==================================================
+              3: LC2 average 
+==================================================*/
+
+
+/*==================================================
+              4: LAC average 
+==================================================*/

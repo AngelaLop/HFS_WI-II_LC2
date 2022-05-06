@@ -48,136 +48,137 @@ label variable age_55_65 "Aged 55-65 years old"
 
 * 3.04 Sexo
 
-tab v03_04,m
+tab u03_04,m
 
-g female = (v03_04==2)
-g male   = (v03_04==1)
+g female = (u03_04==2)
+g male   = (u03_04==1)
 
 * nivel educativo 
-tab v03_09a, g(v309_)
+tab u03_09a, g(u309_)
 
+* 
  if inlist(`country',503,505,510,570)  {
-g primary_less = (v309_1==1) | (v309_2==1) 
+g primary_less = (u309_1==1) | (u309_2==1) 
 label variable primary_less "Primary or less educated"
 
-g secondary =  (v309_3==1) | (v309_4==1)
+g secondary =  (u309_3==1) | (u309_4==1)
 label variable secondary "Secondary education"
 
-g terciary = (v309_5==1) 
+g terciary = (u309_5==1) 
 label variable terciary "Terciary education"
 
 
- tab v03_10a, g(v0310a_)
+ tab u03_10a, g(u0310a_)
 
-g hh_primary_less = (v0310a_1==1) | (v0310a_2==1) | (v0310a_3==1)
+g hh_primary_less = (u0310a_1==1) | (u0310a_2==1) | (u0310a_3==1)
 label variable primary_less "Primary or less educated"
 
-g hh_secondary = (v0310a_4==1) | (v0310a_5==1) | (v0310a_6==1)
+g hh_secondary = (u0310a_4==1) | (u0310a_5==1) | (u0310a_6==1)
 label variable secondary "Secondary education"
 
-g hh_terciary = (v0310a_7==1) 
+g hh_terciary = (u0310a_7==1) 
 label variable terciary "Terciary education" 
  
  }
 
   if inlist(`country',501)  {
-g primary_less = (v309_1==1) | (v309_2==1) 
+g primary_less = (u309_1==1) | (u309_2==1) 
 label variable primary_less "Primary or less educated"
 
-g secondary =  (v309_3==1) | (v309_4==1)
+g secondary =  (u309_3==1) | (u309_4==1) | (u309_5==1) 
 label variable secondary "Secondary education"
 
-g terciary = (v309_5==1) 
+g terciary = (u309_6==1) | (u309_7==1) | (u309_8==1)
 label variable terciary "Terciary education"
 
 
- tab v03_10a, g(v0310a_)
+ tab u03_10a, g(u0310a_)
 
-g hh_primary_less = (v0310a_1==1) | (v0310a_2==1) | (v0310a_3==1)
+g hh_primary_less = (u0310a_1==1) | (u0310a_2==1) 
 label variable primary_less "Primary or less educated"
 
-g hh_secondary = (v0310a_4==1) | (v0310a_5==1) | (v0310a_6==1)
+g hh_secondary = (u0310a_3==1) | (u0310a_4==1) | (u0310a_5==1)  
 label variable secondary "Secondary education"
 
-g hh_terciary = (v0310a_7==1) 
+g hh_terciary = (u0310a_6==1) | (u0310a_7==1) | (u0310a_8==1) 
 label variable terciary "Terciary education" 
  
  }
 
 * Santa Lucia, Dominica  
- if inlist(`country',758,767)  {
-g primary_less = (v309_1==1) | (v309_2==1) 
+ if inlist(`country',502,758,767)  {
+g primary_less = (u309_1==1) | (u309_2==1) 
 label variable primary_less "Primary or less educated"
 
-g secondary =  (v309_3==1) | (v309_4==1)
+g secondary =  (u309_3==1) | (u309_4==1)
 label variable secondary "Secondary education"
 
-g terciary = (v309_5==1) | (v309_6==1) | (v309_7==1)
+g terciary = (u309_5==1) | (u309_6==1) | (u309_7==1)
 label variable terciary "Terciary education"
 
 
- tab v03_10a, g(v0310a_)
+ tab u03_10a, g(u0310a_)
 
-g hh_primary_less = (v0310a_1==1) | (v0310a_2==1) 
+g hh_primary_less = (u0310a_1==1) | (u0310a_2==1) 
 label variable primary_less "Primary or less educated"
 
-g hh_secondary = (v0310a_3==1) | (v0310a_4==1) 
+g hh_secondary = (u0310a_3==1) | (u0310a_4==1) 
 label variable secondary "Secondary education"
 
-g hh_terciary =  (v0310a_5==1) | (v0310a_6==1) | (v0310a_7==1) 
+g hh_terciary =  (u0310a_5==1) | (u0310a_6==1) | (u0310a_7==1) 
 label variable terciary "Terciary education" 
  
  } 
  
 * Jamaica, Guyana 
  if inlist(`country',876,592)  {
-g primary_less = (v309_1==1) | (v309_2==1) | (v309_3==1) 
+g primary_less = (u309_1==1) | (u309_2==1) | (u309_3==1) 
 label variable primary_less "Primary or less educated"
 
-g secondary =   (v309_4==1) | (v309_5==1)
+g secondary =   (u309_4==1) | (u309_5==1)
 label variable secondary "Secondary education"
 
-g terciary = (v309_6==1) | (v309_7==1) | (v309_8==1)
+g terciary = (u309_6==1) | (u309_7==1) | (u309_8==1)
 label variable terciary "Terciary education"
 
 
- tab v03_10a, g(v0310a_)
+ tab u03_10a, g(u0310a_)
 
-g hh_primary_less = (v0310a_1==1) | (v0310a_2==1) (v0310a_3==1) | 
+g hh_primary_less = (u0310a_1==1) | (u0310a_2==1) (u0310a_3==1) | 
 label variable primary_less "Primary or less educated"
 
-g hh_secondary = (v0310a_4==1) | (v0310a_5==1) 
+g hh_secondary = (u0310a_4==1) | (u0310a_5==1) 
 label variable secondary "Secondary education"
 
-g hh_terciary =   (v0310a_6==1) | (v0310a_7==1) | (v0310a_8==1) 
+g hh_terciary =   (u0310a_6==1) | (u0310a_7==1) | (u0310a_8==1) 
 label variable terciary "Terciary education" 
  
  } 
  
  
-if  inlist(`country',502,504,506,507,509,520,540,591,593,595,598,809)  {
- g primary_less = (v309_1==1) | (v309_2==1) | (v309_3==1)
+if  inlist(`country',504,506,507,509,520,540,591,593,595,598,809)  {
+ g primary_less = (u309_1==1) | (u309_2==1) | (u309_3==1)
 label variable primary_less "Primary or less educated"
 
-g secondary = (v309_4==1) | (v309_5==1) | (v309_6==1)
+g secondary = (u309_4==1) | (u309_5==1) | (u309_6==1)
 label variable secondary "Secondary education"
 
-g terciary = (v309_7==1) | (v309_8==1) 
+g terciary = (u309_7==1) | (u309_8==1) 
 label variable terciary "Terciary education"
 
  
  
 * nivel educativo HH head 
 
- tab v03_10a, g(v0310a_)
+ tab u03_10a, g(u0310a_)
 
-g hh_primary_less = (v0310a_1==1) | (v0310a_2==1) | (v0310a_3==1)
+g hh_primary_less = (u0310a_1==1) | (u0310a_2==1) | (u0310a_3==1)
 label variable primary_less "Primary or less educated"
 
-g hh_secondary = (v0310a_4==1) | (v0310a_5==1) | (v0310a_6==1)
+g hh_secondary = (u0310a_4==1) | (u0310a_5==1) | (u0310a_6==1)
 label variable secondary "Secondary education"
 
-g hh_terciary = (v0310a_7==1) | (v0310a_8==1) 
+g hh_terciary = (u0310a_7==1) | (u0310a_8==1) 
 label variable terciary "Terciary education" 
  }
  
@@ -242,11 +243,9 @@ g attendance_6_17 = v08_03==1 & ((v08_05==1 | v08_05==2 & v08_06==1) | (v08_08==
 * schools offer face to face classes 
 g face_to_face_classes_6_17 = v08_04==1
 
-
 *Under 5 years old children attending some form of education activities
 g attendance_prepan_1_5 = (v08_17==1) | (v08_17==2 & v08_17==2)
 g attendance_1_5 = (v08_19==1) | (v08_19==2 & v08_20==2| v08_20==13 )
-
 
 *Perception of children learning in relation to before the pandemic 
 
@@ -262,17 +261,6 @@ g learning_DK =(v08_12==98)
 *----------2.7: Health
 
 *----------3.7: Digital and finance
-
-/*==================================================
-              4: 
-==================================================*/
-
-
-*----------4.1:
-
-
-*----------4.2:
-
 
 
 
