@@ -157,7 +157,8 @@ label variable terciary "Terciary education"
  
  
 if  inlist(`country',504,506,507,509,520,540,591,593,595,598,809)  {
- g primary_less = (u309_1==1) | (u309_2==1) | (u309_3==1)
+
+g primary_less = (u309_1==1) | (u309_2==1) | (u309_3==1)
 label variable primary_less "Primary or less educated"
 
 g secondary = (u309_4==1) | (u309_5==1) | (u309_6==1)
