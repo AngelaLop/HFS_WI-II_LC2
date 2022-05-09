@@ -13,18 +13,6 @@ Output:
 ==================================================*/
 
 /*==================================================
-              0: Program set up
-==================================================*/
-
-
-global path "C:\Users\WB585318\WBG\Javier Romero - Panama\HFPS\Analysis"
-global data "C:\Users\WB585318\WBG\LAC High Frequency Phone Survey v.2 - WB Group - PE Shared Folder\Data"
-global results "$path\results"
-global w1 "$data\Wave 1"
-global w2 "$data\Wave 2"
-
-
-/*==================================================
               1: second wave 
 ==================================================*/
 
@@ -33,7 +21,7 @@ global w2 "$data\Wave 2"
 *----------1.1: cuts 
 *gen mother_0_5
 *label variable mother_0_5 "Mother of children 0-5years old"
-
+g total = 1
 * 3.03 Edad
 tab v03_03, m
 
@@ -48,138 +36,211 @@ label variable age_55_65 "Aged 55-65 years old"
 
 * 3.04 Sexo
 
-tab u03_04,m
+tab v03_04,m
 
-g female = (u03_04==2)
-g male   = (u03_04==1)
+g female = (v03_04==2)
+g male   = (v03_04==1)
 
 * nivel educativo 
-tab u03_09a, g(u309_)
+* nivel educativo 
+tab v03_09a, g(v309_)
 
-* 
- if inlist(`country',503,505,510,570)  {
-g primary_less = (u309_1==1) | (u309_2==1) 
+* interviwee
+*primary less
+ if inlist(`country',501,503,505,510,758,767,502,506,592,876)  {
+g primary_less = (v309_1==1) | (v309_2==1) 
 label variable primary_less "Primary or less educated"
-
-g secondary =  (u309_3==1) | (u309_4==1)
-label variable secondary "Secondary education"
-
-g terciary = (u309_5==1) 
-label variable terciary "Terciary education"
-
-
- tab u03_10a, g(u0310a_)
-
-g hh_primary_less = (u0310a_1==1) | (u0310a_2==1) | (u0310a_3==1)
-label variable primary_less "Primary or less educated"
-
-g hh_secondary = (u0310a_4==1) | (u0310a_5==1) | (u0310a_6==1)
-label variable secondary "Secondary education"
-
-g hh_terciary = (u0310a_7==1) 
-label variable terciary "Terciary education" 
- 
  }
 
+ if inlist(`country',570,504,507,520)  {
+g primary_less = (v309_1==1) | (v309_2==1) | (v309_3==1)
+label variable primary_less "Primary or less educated" 
+ }
+ 
+*secondary  
+if inlist(`country',503)  { 
+g secondary =  (v309_3==1) | (v309_5==1)
+label variable secondary "Secondary education"
+}
+
+ if inlist(`country',505,510,758,767,502,592,876)  {
+g secondary =  (v309_3==1) | (v309_4==1)
+label variable secondary "Secondary education"
+ }
+ 
+  if inlist(`country',570)  {
+g secondary =  (v309_4==1) | (v309_5==1)
+label variable secondary "Secondary education"
+  }
+
+  if inlist(`country',504,507)  {
+g secondary =  (v309_4==1) | (v309_5==1) | (v309_6==1)
+label variable secondary "Secondary education"
+  }
+* mexico   
+  if inlist(`country',520)  {
+g secondary =  (v309_4==1) | (v309_5==1) | (v309_6==1) | (v309_7==1)
+label variable secondary "Secondary education"
+  }  
+  
+ if inlist(`country',501,506)  {
+g secondary =  (v309_3==1) | (v309_4==1) | (v309_5==1) 
+label variable secondary "Secondary education"
+  }
+  
+* terciary 
+if inlist(`country',503) {
+g terciary = (v309_4==1) | (v309_6==1) 
+label variable terciary "Terciary education"
+}
+
+if inlist(`country',505,510) { 
+g terciary = (v309_5==1) | (v309_6==1) 
+label variable terciary "Terciary education"
+}
+
+  if inlist(`country',570)  {
+g terciary = (v309_6==1) 
+label variable terciary "Terciary education"
+  }
+
+  if inlist(`country',506)  {
+g terciary = (v309_6==1) | (v309_7==1)
+label variable terciary "Terciary education"
+  }
+
+  if inlist(`country',520)  {
+g terciary = (v309_8==1) | (v309_9==1) | (v309_10==1) | (v309_11==1)
+label variable terciary "Terciary education"
+  }  
+  
   if inlist(`country',501)  {
-g primary_less = (u309_1==1) | (u309_2==1) 
-label variable primary_less "Primary or less educated"
-
-g secondary =  (u309_3==1) | (u309_4==1) | (u309_5==1) 
-label variable secondary "Secondary education"
-
-g terciary = (u309_6==1) | (u309_7==1) | (u309_8==1)
+g terciary = (v309_6==1) | (v309_7==1) | (v309_8==1)
 label variable terciary "Terciary education"
+  }
 
+  if inlist(`country',504,507)  {
+g terciary = (v309_7==1) | (v309_8==1)
+label variable terciary "Terciary education"
+  }  
+  
+* Santa Lucia, Dominica  
+if inlist(`country',758,767,502,592,876)  {
+g terciary = (v309_5==1) | (v309_6==1) | (v309_7==1)
+label variable terciary "Terciary education"
+}  
 
- tab u03_10a, g(u0310a_)
+* head ------------------
 
-g hh_primary_less = (u0310a_1==1) | (u0310a_2==1) 
+ tab v03_10a, g(v0310_)
+*primary 
+if inlist(`country',501,503,505,510,758,767,502,506) { 
+g hh_primary_less = (v0310_1==1) | (v0310_2==1) 
 label variable primary_less "Primary or less educated"
+}
 
-g hh_secondary = (u0310a_3==1) | (u0310a_4==1) | (u0310a_5==1)  
+  if inlist(`country',570,876,504,507,520,592)  {
+g hh_primary_less = (v0310_1==1) | (v0310_2==1) | (v0310_3==1)
+label variable primary_less "Primary or less educated"
+  }
+
+* secondary 
+if inlist(`country',503) {
+g hh_secondary = (v0310_3==1) | (v0310_5==1) 
 label variable secondary "Secondary education"
+}
 
-g hh_terciary = (u0310a_6==1) | (u0310a_7==1) | (u0310a_8==1) 
+if inlist(`country',505,510,758,767,502) { 
+g hh_secondary = (v0310_3==1) | (v0310_4==1) 
+label variable secondary "Secondary education"
+}
+
+  if inlist(`country',570,876,592)  {
+g hh_secondary = (v0310_4==1) | (v0310_5==1) 
+label variable secondary "Secondary education"
+  }
+  
+  if inlist(`country',504,507)  {
+g hh_secondary = (v0310_4==1) | (v0310_5==1) | (v0310_6==1) 
+label variable secondary "Secondary education"
+  }
+  
+  if inlist(`country',501,506)  {
+g hh_secondary = (v0310_3==1) | (v0310_4==1) | (v0310_5==1)  
+label variable secondary "Secondary education"
+  } 
+
+* mexico   
+ if inlist(`country',520)  {
+g hh_secondary =  (v0310_4==1) | (v0310_5==1) | (v0310_6==1) | (v0310_7==1)
+label variable secondary "Secondary education"
+  }  
+  
+*terciary 
+if inlist(`country',503) {
+g hh_terciary = (v0310_4==1) | (v0310_6==1) 
 label variable terciary "Terciary education" 
- 
+} 
+
+if inlist(`country',505,510) { 
+g hh_terciary = (v0310_5==1) | (v0310_6==1) 
+label variable terciary "Terciary education" 
  }
 
-* Santa Lucia, Dominica  
- if inlist(`country',502,758,767)  {
-g primary_less = (u309_1==1) | (u309_2==1) 
-label variable primary_less "Primary or less educated"
-
-g secondary =  (u309_3==1) | (u309_4==1)
-label variable secondary "Secondary education"
-
-g terciary = (u309_5==1) | (u309_6==1) | (u309_7==1)
-label variable terciary "Terciary education"
-
-
- tab u03_10a, g(u0310a_)
-
-g hh_primary_less = (u0310a_1==1) | (u0310a_2==1) 
-label variable primary_less "Primary or less educated"
-
-g hh_secondary = (u0310a_3==1) | (u0310a_4==1) 
-label variable secondary "Secondary education"
-
-g hh_terciary =  (u0310a_5==1) | (u0310a_6==1) | (u0310a_7==1) 
+  if inlist(`country',570)  {
+g hh_terciary = (v0310_6==1) 
 label variable terciary "Terciary education" 
- 
  } 
  
-* Jamaica, Guyana 
- if inlist(`country',876,592)  {
-g primary_less = (u309_1==1) | (u309_2==1) | (u309_3==1) 
-label variable primary_less "Primary or less educated"
-
-g secondary =   (u309_4==1) | (u309_5==1)
-label variable secondary "Secondary education"
-
-g terciary = (u309_6==1) | (u309_7==1) | (u309_8==1)
-label variable terciary "Terciary education"
-
-
- tab u03_10a, g(u0310a_)
-
-g hh_primary_less = (u0310a_1==1) | (u0310a_2==1) (u0310a_3==1) | 
-label variable primary_less "Primary or less educated"
-
-g hh_secondary = (u0310a_4==1) | (u0310a_5==1) 
-label variable secondary "Secondary education"
-
-g hh_terciary =   (u0310a_6==1) | (u0310a_7==1) | (u0310a_8==1) 
+  if inlist(`country',506)  {
+g hh_terciary = (v0310_6==1) | (v0310_7==1)  
 label variable terciary "Terciary education" 
- 
  } 
  
- 
-if  inlist(`country',504,506,507,509,520,540,591,593,595,598,809)  {
+  if inlist(`country',501,876,592)  {
+g hh_terciary = (v0310_6==1) | (v0310_7==1) | (v0310_8==1) 
+label variable terciary "Terciary education" 
+ } 
 
-g primary_less = (u309_1==1) | (u309_2==1) | (u309_3==1)
+   if inlist(`country',504,507)  {
+g hh_terciary = (v0310_7==1) | (v0310_8==1) 
+label variable terciary "Terciary education" 
+ } 
+* Mexico 
+  if inlist(`country',520)  {
+g hh_terciary = (v0310_8==1) | (v0310_9==1) | (v0310_10==1) | (v0310_11==1)
+label variable terciary "Terciary education"
+  }  
+ 
+if inlist(`country',758,767,502)  {
+g hh_terciary =  (v0310_5==1) | (v0310_6==1) | (v0310_7==1) 
+label variable terciary "Terciary education" 
+ }  
+*------
+ 
+if  inlist(`country',509,540,591,593,595,598,809)  {
+ g primary_less = (v309_1==1) | (v309_2==1) | (v309_3==1)
 label variable primary_less "Primary or less educated"
 
-g secondary = (u309_4==1) | (u309_5==1) | (u309_6==1)
+g secondary = (v309_4==1) | (v309_5==1) | (v309_6==1)
 label variable secondary "Secondary education"
 
-g terciary = (u309_7==1) | (u309_8==1) 
+g terciary = (v309_7==1) | (v309_8==1) 
 label variable terciary "Terciary education"
 
  
  
 * nivel educativo HH head 
 
- tab u03_10a, g(u0310a_)
+*tab v03_10a, g(v0310_)
 
-g hh_primary_less = (u0310a_1==1) | (u0310a_2==1) | (u0310a_3==1)
+g hh_primary_less = (v0310_1==1) | (v0310_2==1) | (v0310_3==1)
 label variable primary_less "Primary or less educated"
 
-g hh_secondary = (u0310a_4==1) | (u0310a_5==1) | (u0310a_6==1)
+g hh_secondary = (v0310_4==1) | (v0310_5==1) | (v0310_6==1)
 label variable secondary "Secondary education"
 
-g hh_terciary = (u0310a_7==1) | (u0310a_8==1) 
+g hh_terciary = (v0310_7==1) | (v0310_8==1) 
 label variable terciary "Terciary education" 
  }
  

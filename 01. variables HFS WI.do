@@ -12,18 +12,6 @@ References:
 Output:             
 ==================================================*/
 
-/*==================================================
-              0: Program set up
-==================================================*/
-
-
-
-global path "C:\Users\WB585318\WBG\Javier Romero - Panama\HFPS\LC2 presentation Ph2w2"
-global data "$path\data"
-global dos  "C:\Users\WB585318\OneDrive - Universidad de los Andes\WB\Git_repositories\HFS_WI-II_LC2"
-global results "$path\results"
-global w1 	"$data\Wave 1"
-global w2 	"$data\Wave 2"
 
 /*==================================================
               1: first wave 
@@ -35,7 +23,7 @@ global w2 	"$data\Wave 2"
 *----------1.1: cuts 
 *gen mother_0_5
 *label variable mother_0_5 "Mother of children 0-5years old"
-
+g total =1 
 * 3.03 Edad
 tab u03_03, m
 
@@ -60,12 +48,12 @@ tab u03_09a, g(u309_)
 
 * interviwee
 *primary less
- if inlist(`country',501,503,505,510,758,767,502,506)  {
+ if inlist(`country',501,503,505,510,758,767,502,506,592)  {
 g primary_less = (u309_1==1) | (u309_2==1) 
 label variable primary_less "Primary or less educated"
  }
 
- if inlist(`country',570,876,592,504,507,520)  {
+ if inlist(`country',570,876,504,507,520)  {
 g primary_less = (u309_1==1) | (u309_2==1) | (u309_3==1)
 label variable primary_less "Primary or less educated" 
  }
@@ -76,12 +64,12 @@ g secondary =  (u309_3==1) | (u309_5==1)
 label variable secondary "Secondary education"
 }
 
- if inlist(`country',505,510,758,767,502)  {
+ if inlist(`country',505,510,758,767,502,592)  {
 g secondary =  (u309_3==1) | (u309_4==1)
 label variable secondary "Secondary education"
  }
  
-  if inlist(`country',570,876,592)  {
+  if inlist(`country',570,876)  {
 g secondary =  (u309_4==1) | (u309_5==1)
 label variable secondary "Secondary education"
   }
@@ -127,7 +115,7 @@ g terciary = (u309_8==1) | (u309_9==1) | (u309_10==1) | (u309_11==1)
 label variable terciary "Terciary education"
   }  
   
-  if inlist(`country',501,876,592)  {
+  if inlist(`country',501,876)  {
 g terciary = (u309_6==1) | (u309_7==1) | (u309_8==1)
 label variable terciary "Terciary education"
   }
@@ -138,7 +126,7 @@ label variable terciary "Terciary education"
   }  
   
 * Santa Lucia, Dominica  
-if inlist(`country',758,767,502)  {
+if inlist(`country',758,767,502,592)  {
 g terciary = (u309_5==1) | (u309_6==1) | (u309_7==1)
 label variable terciary "Terciary education"
 }  
@@ -152,8 +140,8 @@ g hh_primary_less = (u0310_1==1) | (u0310_2==1)
 label variable primary_less "Primary or less educated"
 }
 
-  if inlist(`country',570,876,592,504,507,520)  {
-g hh_primary_less = (u0310_1==1) | (u0310_2==1) | (u0310a_3==1)
+  if inlist(`country',570,876,504,507,520,592)  {
+g hh_primary_less = (u0310_1==1) | (u0310_2==1) | (u0310_3==1)
 label variable primary_less "Primary or less educated"
   }
 
@@ -185,7 +173,7 @@ label variable secondary "Secondary education"
 
 * mexico   
  if inlist(`country',520)  {
-g secondary =  (u0310_4==1) | (u0310_5==1) | (u0310_6==1) | (u0310_7==1)
+g hh_secondary =  (u0310_4==1) | (u0310_5==1) | (u0310_6==1) | (u0310_7==1)
 label variable secondary "Secondary education"
   }  
   
@@ -221,7 +209,7 @@ label variable terciary "Terciary education"
  } 
 * Mexico 
   if inlist(`country',520)  {
-g terciary = (u0310_8==1) | (u0310_9==1) | (u0310_10==1) | (u0310_11==1)
+g hh_terciary = (u0310_8==1) | (u0310_9==1) | (u0310_10==1) | (u0310_11==1)
 label variable terciary "Terciary education"
   }  
  
@@ -245,7 +233,7 @@ label variable terciary "Terciary education"
  
 * nivel educativo HH head 
 
- tab u03_10a, g(u0310_)
+*tab u03_10a, g(u0310_)
 
 g hh_primary_less = (u0310_1==1) | (u0310_2==1) | (u0310_3==1)
 label variable primary_less "Primary or less educated"
@@ -304,33 +292,34 @@ g fs_new_labor = .
 g fs_child_labor = .
 
 *----------2.4: Food insecurity 
-g run_out_food = .
+g run_out_food = (u04_01==1)
 
 
 *----------2.5: Education
-gen chil_06_17 =(w_cha_ph2w2 != .) if inrange(v07_19,6,17)
-gen chil_01_05 =(w_cha_ph2w2 != .) if inrange(v08_16,1,5)
+gen chil_06_17 =(w_cha_ph2w1 != .) if inrange(u07_19,6,17)
+gen chil_01_05 =.
 * Share of school-age children attending some form of education activities (in person or remotely)
 * Change in school attendance
 * before the pandemic
-g attendance_prepan_6_17 = inlist(v08_02,1,2)
-g attendance_6_17 = v08_03==1 & ((v08_05==1 | v08_05==2 & v08_06==1) | (v08_08==1 | v08_08==2 & v08_10==1))
+tab1 u08_02 u08_03 u08_05 u08_06 u08_08 u08_10, m
+g attendance_prepan_6_17 = inlist(u08_02,1,2)
+g attendance_6_17 = u08_03==1 & ((u08_05==1 | u08_05==2 & u08_06==1) | (u08_08==1 | u08_08==2 & u08_10==1))
 
 * schools offer face to face classes 
-g face_to_face_classes_6_17 = v08_04==1
+g face_to_face_classes_6_17 = u08_04==1
 
 *Under 5 years old children attending some form of education activities
-g attendance_prepan_1_5 = (v08_17==1) | (v08_17==2 & v08_17==2)
-g attendance_1_5 = (v08_19==1) | (v08_19==2 & v08_20==2| v08_20==13 )
+g attendance_prepan_1_5 = .
+g attendance_1_5 = .
 
 *Perception of children learning in relation to before the pandemic 
 
-g learning_much_less =(v08_12==1)
-g learning_less =(v08_12==2)
-g learning_same =(v08_12==3)
-g learning_more =(v08_12==4)
-g learning_much_more =(v08_12==5)
-g learning_DK =(v08_12==98)
+g learning_much_less =.
+g learning_less =.
+g learning_same =.
+g learning_more =.
+g learning_much_more =.
+g learning_DK =.
 
 *----------2.6: Gender
 
