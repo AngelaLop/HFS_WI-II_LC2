@@ -36,7 +36,7 @@ preserve
               1: first wave 
 ==================================================*/
 
-local countries 501 502 503 504 505 506 507 509 510 520 540 570 591 592 593 595 598 758 767 809  876
+local countries 501 502 503 504 505 506 507 509 510 520 540 570 591 592 593 595 598 758 767 809 876 999
 
 foreach country of local countries {
 use "$w1\\`country'_PH2W1_CT_Casos", replace 
