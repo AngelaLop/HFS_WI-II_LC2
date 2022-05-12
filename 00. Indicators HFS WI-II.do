@@ -36,14 +36,14 @@ preserve
               1: first wave 
 ==================================================*/
 
-local countries 501 502 503 504 505 506 507 509 510 520 540 570 591 592 593 595 598 758 767 809 876 999
+local countries 501 502 503 504 505 506 507 509 510 520 540 570 591 592 593 595 598 758 767 809  876
 
 foreach country of local countries {
 use "$w1\\`country'_PH2W1_CT_Casos", replace 
 *destring folio, replace 
 *save "$w1\\`country'_PH2W1_CT_Casos", replace 
 merge 1:1 folio using "$w1\\`country'_PH2W1_CT_Ninos", force 
-include "$dos\01. variables HFS WI.do"
+include "$dos\01. variables HFS WI.do" // gracias por explicarme
 
 local wave w1
 *--------------------------------indicators-------------------------------------
