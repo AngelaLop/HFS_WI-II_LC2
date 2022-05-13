@@ -17,19 +17,6 @@ Output:
 ==================================================*/
 
 
-
-clear all 
-set more off
-gl path "/Users/nicolas/Dropbox/World Bank/HFS"
-gl data "$path/data"
-global results "$path/results"
-global w1 	"$data/Wave 1"
-global w2 	"$data/Wave 2"
-local country 540
-use "$w2/540_PH2W2_CP_Casos", replace
-
-
-
 *----------1.1: cuts 
 *gen mother_0_5
 *label variable mother_0_5 "Mother of children 0-5years old"
@@ -63,7 +50,7 @@ tab1 v03_09a v03_09b, m
 gen		primary = .
 gen 	secondary = .
 g 		terciary = .
-
+local country 507
 // 501 Belice 
 if `country'==501 {
 	replace primary   = inlist(v03_09a, 50101,50102)
@@ -224,7 +211,7 @@ replace v03_10b_ = v03_09b if v03_10b == . & v03_01 == 1
 
 gen	primary_hh = .
 gen secondary_hh = .
-gen terciary_hh
+gen terciary_hh =.
 
 // 501 Belice - 26 NS/NR (5.8%)
 if `country'==501 {
@@ -353,7 +340,7 @@ if `country'==758 {
 	replace terciary_hh  = inrange(v03_10a_, 75804,75807)
 
 }	
-if `country'==767
+if `country'==767 {
 // 767 Dominica - 95 NS/NR (21.84%)
 	replace primary_hh   = inlist(v03_10a_, 76701, 76702)
 	replace secondary_hh = v03_10a_ == 76703
@@ -382,9 +369,7 @@ tab v03_08a, m
 g urban = (v03_08a==1)
 g rural = (v03_08a==2)
 
-*type of educational institution 
-g public  =(v08_03b==1)
-g private =(v08_03b==2)
+
 
 *-------------------------------Modules 
 
@@ -601,43 +586,178 @@ g fs_rent_obligations = (v14_01b==1)
 g fs_new_labor = (v14_02a==1)
 *Insert a HH member under 18 to the labor force 
 g fs_child_labor = (v14_02b==1)
+* 
+* 14.7 aumentos percepcion inseguridad y violencia.
+foreach x in v14_05 v14_06{
+    gen aumento_`x' =. 
+	replace aumento_`x' = 0 if inlist(`x', 2,3)
+	replace aumento_`x' = 1 if `x' == 1
+}
+
+* propuesta: percepcion de violencia e inseguridad en el entorno - compuesta 
+gen percep_inseg_violencia = . 
+replace percep_inseg_violencia = 0 if aumento_v14_05 == 0 & aumento_v14_06 == 0 
+replace percep_inseg_violencia = 1 if aumento_v14_05 == 1 | aumento_v14_06 == 1 
+
 
 *----------2.4: Food insecurity 
 g run_out_food = (v04_01==1)
 
+// Completar variable v04_04
+clonevar v04_04_ = v04_04 
+replace  v04_04_ = v04_04 if v04_04 == . & tipo_muestra == 2
+tab pais v04_04_, m
+
+g run_out_food_pre_pan = (v04_04_==1)
 
 *----------2.5: Education
+
+* Corregir observaciones que no siguen CATI
+
+foreach var in v08_09a v08_09b v08_09c v08_09d v08_09e v08_09f v08_09z{
+	replace `var' = . if v08_08 == 2
+}
+
 gen chil_06_17 =(w_cha_ph2w2 != .) if inrange(v07_19,6,17)
 gen chil_01_05 =(w_cha_ph2w2 != .) if inrange(v08_16,1,5)
 * Share of school-age children attending some form of education activities (in person or remotely)
 * Change in school attendance
 * before the pandemic
 g attendance_prepan_6_17 = inlist(v08_02,1,2)
-g attendance_6_17 = v08_03==1 & ((v08_05==1 | v08_05==2 & v08_06==1) | (v08_08==1 | v08_08==2 & v08_10==1))
+replace attendance_prepan_6_17 = . if v08_02 == 98 | v08_02 == . 
+replace attendance_prepan_6_17 = . if v08_02 == 3 & v07_19 == 6
 
+*g attendance_6_17 = v08_03==1 & ((v08_05==1 | v08_05==2 & v08_06==1) | (v08_08==1 | v08_08==2 & v08_10==1))
+gen attendance_6_17 = . 
+replace attendance_6_17 = 0 if v08_02 != .
+replace attendance_6_17 = 1 if v08_05 == 1
+replace attendance_6_17 = 1 if v08_08 == 1
+replace attendance_6_17 = 1 if inlist(v08_06,1,17)
+replace attendance_6_17 = 1 if inlist(v08_10,1,2,15)
+replace attendance_6_17 = . if v08_05 == 98 & v08_08 == 98
 * schools offer face to face classes 
-g face_to_face_classes_6_17 = v08_04==1
+*g face_to_face_classes_6_17 = v08_04==1
+**# Bookmark #1
+gen face_to_face_classes_6_17     = 0 if attendance_6_17 == 1
+replace face_to_face_classes_6_17 = 1 if v08_05 == 1
+replace face_to_face_classes_6_17 = 1 if v08_10 == 15 
+replace face_to_face_classes_6_17 = . if attendance_6_17 != 1
 
-*Under 5 years old children attending some form of education activities
-g attendance_prepan_1_5 = (v08_17==1) | (v08_17==2 & v08_17==2)
-g attendance_1_5 = (v08_19==1) | (v08_19==2 & v08_20==2| v08_20==13 )
+* 8.13.1 Asistia a un centro antes de la pandemia
+gen attendance_prepan_1_5 = 1 if v08_17 == 1
+replace attendance_prepan_1_5 = 0 if v08_17 == 2
+
+* 8.14.1 Asiste a un centro ahora
+gen attendance_1_5 = 1 if v08_19 == 1
+replace attendance_1_5 = 0 if v08_19 == 2
+
+
 
 *Perception of children learning in relation to before the pandemic 
+* 8.12.1 Aprenden menos o mucho menos
+gen learning_less = 1 if inlist(v08_12,1,2)
+replace learning_less = 0 if inlist(v08_12,3,4,5)
+label var learning_less "Indicador de niños matriculados antes y ahora que consideran que ahora aprenden menos" 
+label val learning_less yn 
 
-g learning_much_less =(v08_12==1)
-g learning_less =(v08_12==2)
-g learning_same =(v08_12==3)
-g learning_more =(v08_12==4)
-g learning_much_more =(v08_12==5)
-g learning_DK =(v08_12==98)
+* 8.12.2 Aprenden igual
+gen learning_same = 1 if inlist(v08_12,3)
+replace learning_same = 0 if inlist(v08_12,1,2,4,5)
+label var learning_same "Indicador de niños matriculados antes y ahora que consideran que ahora igual" 
+label val learning_same yn 
+
+
+
+
+* 8.4.1 Porcentaje de matriculados en colegio público
+
+	gen publico1 = .
+
+	// Países con solo sistema público o privado
+	foreach pais in 501 502 503 504 505 507 510 520 580 592 598 758 876{
+		replace publico1 = 1 if v08_03b == `pais'01
+		replace publico1 = 0 if v08_03b == `pais'02
+	}
+
+	// Países con sistema público, privado y mixto
+	foreach pais in 506 509 540 591 595 809{
+		replace publico1 = 1 if v08_03b == `pais'01
+		replace publico1 = 0 if inlist(v08_03b,`pais'02,`pais'03)
+	}
+	
+	// Chile
+	replace publico1 = 1 if inlist(v08_03b,56001,56005)
+	replace publico1 = 0 if inlist(v08_03b,56002,56003,56004)
+	
+	// Ecuador
+	replace publico1 = 1 if inlist(v08_03b,59301,59304)
+	replace publico1 = 0 if inlist(v08_03b,59302,59303)
+
+* 8.4.2 Porcentaje de matriculados en colegio privado
+
+	gen privado1 = .
+
+	// Países con solo sistema público o privado
+	foreach pais in 501 502 503 504 505 507 510 520 580 592 598 758 876{
+		replace privado1 = 1 if v08_03b == `pais'02
+		replace privado1 = 0 if v08_03b == `pais'01
+	}
+	
+	// Países con sistema público, privado y mixto
+	foreach pais in 506 509 591 595 809{
+		replace privado1 = 1 if v08_03b == `pais'02
+		replace privado1 = 0 if inlist(v08_03b,`pais'01,`pais'03)
+	}
+	
+	// Argentina: se incluye la educación parroquial como privada
+	replace privado1 = 1 if inlist(v08_03b,54002,54003)
+	replace privado1 = 0 if v08_03b == 54001
+
+	// Chile
+	replace privado1 = 1 if inlist(v08_03b,56003)
+	replace privado1 = 0 if inlist(v08_03b,56001,56002,56004,56005)
+	
+	// Ecuador
+	replace privado1 = 1 if inlist(v08_03b,59303)
+	replace privado1 = 0 if inlist(v08_03b,59301,59302,59304)
+	
+* 8.4.3 Porcentaje de matriculados en colegio mixto
+
+	gen mixto1 = .
+
+	// Países con solo sistema público o privado
+	foreach pais in 501 502 503 504 505 507 510 520 580 592 598 758 876{
+		replace mixto1 = 0 if inlist(v08_03b,`pais'01,`pais'02)
+	}
+	
+	// Países con sistema público, privado y mixto
+	* Costa Rica (subvencionado = institución privada que recibe dinero del Estado)
+	* Haiti: CONFIRMAR QUÉ SIGNIFICA OPCION 50903
+	* Bolivia (convenio = financiado por el estado administrado por la Iglesia)
+	* Paraguay (subvencionado = administrado por privado financiado por el Estado)
+	* Rep Dom: (semioficial)
+	
+	foreach pais in 506 509 591 595 809{
+		replace mixto1 = 1 if v08_03b == `pais'03
+		replace mixto1 = 0 if inlist(v08_03b,`pais'01,`pais'02)
+	}
+	
+	//Argentina (tiene 3 sistemas pero ninguno es mixto)
+	replace mixto1 = 0 if inlist(v08_03b,54001,54002,54003)
+	
+	// Chile: (particular subvencionado = financiado por el estado y por los padres; de administración delegada = propiedad del Estado financiados por privados)
+	replace mixto1 = 1 if inlist(v08_03b,56002,56004)
+	replace mixto1 = 0 if inlist(v08_03b,56001,56003,56005)
+	
+	// Ecuador: (fiscomisional = administrados por privados financiados por el Estado)
+	replace mixto1 = 1 if inlist(v08_03b,59302)
+	replace mixto1 = 0 if inlist(v08_03b,59301,59303,59304)
 
 *----------2.6: Gender
 
 *----------2.7: Health
 
 *----------3.7: Digital and finance
-
-
 
 
 exit

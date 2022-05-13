@@ -57,213 +57,327 @@ g male   = (u03_04==1)
 * nivel educativo 
 tab u03_09a, g(u309_)
 
-* interviwee
-*primary less
- if inlist(`country',501,503,505,510,758,767,502,506,592)  {
-g primary_less = (u309_1==1) | (u309_2==1) 
-label variable primary_less "Primary or less educated"
- }
+gen		primary = .
+gen 	secondary = .
+g 		terciary = .
 
- if inlist(`country',570,876,504,507,520)  {
-g primary_less = (u309_1==1) | (u309_2==1) | (u309_3==1)
-label variable primary_less "Primary or less educated" 
- }
- 
-*secondary  
-if inlist(`country',503)  { 
-g secondary =  (u309_3==1) | (u309_5==1)
-label variable secondary "Secondary education"
+// 501 Belice 
+if `country'==501 {
+	replace primary   = inlist(u03_09a, 50101,50102)
+	replace secondary = u03_09a == 50103
+	replace terciary  = inrange(u03_09a, 50104,50208)
+}
+// 502 Guatemala 
+if `country'==502 {
+	replace primary   = inlist(u03_09a, 50201,50202)
+	replace secondary = inlist(u03_09a, 50203,50204) 
+	replace terciary  = inrange(u03_09a, 50205,50207)
+}	
+// 503 El Salvador 
+if `country'==503 {
+	replace primary   = u03_09a == 50300
+	replace primary   = u03_09a == 50301 & inrange(u03_09b,1,6) 
+	replace secondary = u03_09a == 50301 & inrange(u03_09b,7,9)
+	replace secondary = u03_09a == 50302
+	replace terciary  = inrange(u03_09a, 50303,50305) 
+}	
+// 504 Honduras 
+if `country'==504 {
+	replace primary   = inlist(u03_09a, 50400,50401)
+	replace secondary = inrange(u03_09a, 50402,50404) 
+	replace terciary  = inrange(u03_09a, 50405,50407)
+}
+// 505 Nicaragua - CHECK VALUES OF u03_09a, u03_10a
+if `country'==505 {
+	replace primary   = inlist(u03_09a, 50500,50501)
+	replace secondary = u03_09a == 50502
+	replace terciary  = inrange(u03_09a, 50503,50505)
+}	
+// 506 Costa Rica
+if `country'==506 {
+	replace primary   = inlist(u03_09a, 50600,50601)
+	replace secondary = inlist(u03_09a, 50602,50603) 
+	replace terciary  = inrange(u03_09a, 50604,50606)
+}
+// 507 Panama
+if `country'==507 {
+	replace primary   = inlist(u03_09a, 50701,50702)
+	replace secondary = inrange(u03_09a, 50703,50706) 
+	replace terciary  = inlist(u03_09a, 50707,50708)
+}
+// 509 Haití 
+if `country'==509 {
+	replace primary   = inrange(u03_09a, 50901,50908)
+	replace secondary = inrange(u03_09a, 50909,50915) 
+	replace terciary  = u03_09a==50916
+	
+}
+// 510 Perú
+if `country'==510 {
+	replace primary   = inlist(u03_09a, 51000,51001)
+	replace secondary = u03_09a == 51002
+	replace terciary  = inrange(u03_09a, 51003,51005)
+}	
+// 520 Mexico
+if `country'==520 {
+	replace primary   = inrange(u03_09a, 52001,52003)
+	replace secondary = inlist(u03_09a, 52004,52005,52007,52008) 
+	replace terciary  = inrange(u03_09a, 52009, 52013) | u03_09a == 52006 
+}
+// 540 Argentina 
+if `country'==540 {
+	replace primary   = inrange(u03_09a, 54001,54003)
+	replace primary   = u03_09a == 54004 & inrange(u03_09b,1,7) 
+	replace secondary = u03_09a == 54004 & inrange(u03_09b,8,9) 
+	replace secondary = inlist(u03_09a, 54005,54006) 
+	replace terciary  = inrange(u03_09a, 54007,54009) 
+}
+// 560 Chile
+if `country'==560 {
+	replace primary   = inrange(u03_09a, 56000,56006)
+	replace secondary = inrange(u03_09a, 56007,56010)
+	replace terciary  = inrange(u03_09a, 56011,56016)
+}
+// 570 Colombia
+if `country'==570 {
+	replace primary   = inrange(u03_09a, 57001,57003)
+	replace secondary = inlist(u03_09a, 57004,57005) 
+	replace terciary  = inlist(u03_09a, 57006,57007) 
+}
+// 591 Bolivia 
+if `country'==591 {
+	replace primary   = inlist(u03_09a, 59101,59102,59107)
+	replace primary   = u03_09a == 59105 & inrange(u03_09b,1,6) 
+	replace secondary = inlist(u03_09a, 59103,59104,59106,59108)
+	replace secondary = u03_09a == 59105 & inrange(u03_09b,7,8) 
+	replace terciary  = inrange(u03_09a, 59111,59116)	
+}	
+// 592 Guyana 
+if `country'==592 {
+	replace primary = inrange(u03_09a,59201,59203)
+	replace secondary = u03_09a == 59204
+	replace terciary = inrange(u03_09a, 59205,59208) 
+}
+// 593 Ecuador	 
+if `country'==593 {
+	replace primary   = inlist(u03_09a, 59301,59302)
+	replace primary   = u03_09a == 59303 & inrange(u03_09b,1,7) 
+	replace secondary = inlist(u03_09a, 59304,59305)
+	replace secondary = u03_09a == 59303 & inrange(u03_09b,8,10)
+	replace terciary  = inrange(u03_09a, 59306,59308)
+}
+// 595 Paraguay
+if `country'==595 {
+	replace primary   = inlist(u03_09a, 59501,59502,59503,59505)
+	replace primary   = u03_09a == 59504 & inrange(u03_09b,1,6) 
+	replace secondary = u03_09a == 59504 & inrange(u03_09b,7,9)
+	replace secondary = u03_09a == 59506
+	replace terciary  = inrange(u03_09a, 59507,59509)
+}
+// 598 Uruguay 
+if `country'==598 {
+	replace primary   = inlist(u03_09a, 59800,59801)
+	replace secondary = inrange(u03_09a, 59802,59805)
+	replace terciary  = inrange(u03_09a, 59806,59810)
+}
+if `country'==758 {
+// 758 St Lucia
+	replace primary   = inlist(u03_09a, 75801,75802)
+	replace secondary = u03_09a == 75803
+	replace terciary  = inrange(u03_09a, 75804,75807)
+}
+// 767 Dominica
+if `country'==767 {
+	replace primary   = inlist(u03_09a, 76701, 76702)
+	replace secondary = u03_09a == 76703
+	replace terciary  = inrange(u03_09a, 76704,76707)
+}	
+// 809 República Dominicana
+if `country'==809 {
+	replace primary   = inlist(u03_09a, 80901,80902,80909,80910)
+	replace secondary = inlist(u03_09a, 80903,80904)
+	replace terciary  = inrange(u03_09a, 80905,80908)
+}	
+// 876 Jamaica
+if `country'==876 {
+	replace primary   = inrange(u03_09a, 87601,87603)
+	replace secondary = u03_09a == 87604
+	replace terciary  = inrange(u03_09a, 87605,87608)
+}
+// 999 Brasil 
+if `country'==999 {
+	replace primary   = inrange(u03_09a, 99901,99903)
+	replace secondary = inlist(u03_09a, 99904,99905) 
+	replace terciary  = inlist(u03_09a, 99906,99907) 
 }
 
- if inlist(`country',505,510,758,767,502,592)  {
-g secondary =  (u309_3==1) | (u309_4==1)
-label variable secondary "Secondary education"
- }
- 
-  if inlist(`country',570,876)  {
-g secondary =  (u309_4==1) | (u309_5==1)
-label variable secondary "Secondary education"
-  }
+** Nivel de educación jefe de hogar (máximo alcanzado completo o incompleto)
 
-  if inlist(`country',504,507)  {
-g secondary =  (u309_4==1) | (u309_5==1) | (u309_6==1)
-label variable secondary "Secondary education"
-  }
-* mexico   
-  if inlist(`country',520)  {
-g secondary =  (u309_4==1) | (u309_5==1) | (u309_6==1) | (u309_7==1)
-label variable secondary "Secondary education"
-  }  
-  
- if inlist(`country',501,506)  {
-g secondary =  (u309_3==1) | (u309_4==1) | (u309_5==1) 
-label variable secondary "Secondary education"
-  }
-  
-* terciary 
-if inlist(`country',503) {
-g terciary = (u309_4==1) | (u309_6==1) 
-label variable terciary "Terciary education"
+// Completamos variables para todos los jefes de hogar. 
+clonevar u03_10a_ = u03_10a 
+replace u03_10a_ = u03_09a if u03_10a == . & u03_01 == 1
+clonevar u03_10b_ = u03_10b 
+replace u03_10b_ = u03_09b if u03_10b == . & u03_01 == 1
+
+gen	primary_hh = .
+gen secondary_hh = .
+gen terciary_hh =.
+
+// 501 Belice - 26 NS/NR (5.8%)
+if `country'==501 {
+	replace primary_hh   = inlist(u03_10a_, 50101,50102)
+	replace secondary_hh = u03_10a_ == 50103
+	replace terciary_hh  = inrange(u03_10a_, 50104,50208)
+}	
+// 502 Guatemala - 24 NS/NR (3.23%)
+if `country'==502 {
+	replace primary_hh   = inlist(u03_10a_, 50201,50202)
+	replace secondary_hh = inlist(u03_10a_, 50203,50204) 
+	replace terciary_hh  = inrange(u03_10a_, 50205,50207)
 }
-
-if inlist(`country',505,510) { 
-g terciary = (u309_5==1) | (u309_6==1) 
-label variable terciary "Terciary education"
+if `country'==503 {	
+// 503 El Salvador - 
+	replace primary_hh   = u03_10a_ == 50300
+	replace primary_hh   = u03_10a_ == 50301 & inrange(u03_10b_,1,6) 
+	replace secondary_hh = u03_10a_ == 50301 & inrange(u03_10b_,7,9)
+	replace secondary_hh = u03_10a_ == 50302
+	replace terciary_hh  = inrange(u03_10a_, 50303,50305)
 }
-
-  if inlist(`country',570)  {
-g terciary = (u309_6==1) 
-label variable terciary "Terciary education"
-  }
-
-  if inlist(`country',506)  {
-g terciary = (u309_6==1) | (u309_7==1)
-label variable terciary "Terciary education"
-  }
-
-  if inlist(`country',520)  {
-g terciary = (u309_8==1) | (u309_9==1) | (u309_10==1) | (u309_11==1)
-label variable terciary "Terciary education"
-  }  
-  
-  if inlist(`country',501,876)  {
-g terciary = (u309_6==1) | (u309_7==1) | (u309_8==1)
-label variable terciary "Terciary education"
-  }
-
-  if inlist(`country',504,507)  {
-g terciary = (u309_7==1) | (u309_8==1)
-label variable terciary "Terciary education"
-  }  
-  
-* Santa Lucia, Dominica  
-if inlist(`country',758,767,502,592)  {
-g terciary = (u309_5==1) | (u309_6==1) | (u309_7==1)
-label variable terciary "Terciary education"
-}  
-
-* head ------------------
-
- tab u03_10a, g(u0310_)
-*primary 
-if inlist(`country',501,503,505,510,758,767,502,506) { 
-g hh_primary_less = (u0310_1==1) | (u0310_2==1) 
-label variable primary_less "Primary or less educated"
+if `country'==504 {	
+// 504 Honduras - 
+	replace primary_hh   = inlist(u03_10a_, 50400,50401)
+	replace secondary_hh = inrange(u03_10a_, 50402,50404) 
+	replace terciary_hh  = inrange(u03_10a_, 50405,50407)
 }
-
-  if inlist(`country',570,876,504,507,520,592)  {
-g hh_primary_less = (u0310_1==1) | (u0310_2==1) | (u0310_3==1)
-label variable primary_less "Primary or less educated"
-  }
-
-* secondary 
-if inlist(`country',503) {
-g hh_secondary = (u0310_3==1) | (u0310_5==1) 
-label variable secondary "Secondary education"
+// 505 Nicaragua -
+if `country'==505 {
+	replace primary_hh   = inlist(u03_10a_, 50500,50501)
+	replace secondary_hh = u03_10a_== 50502
+	replace terciary_hh  = inrange(u03_10a_, 50503,50505) 
+}	
+// 506 Costa Rica -
+if `country'==506 {
+	replace primary_hh = inlist(u03_10a_, 50600,50601)
+	replace secondary_hh = inlist(u03_10a_, 50602,50603) 
+	replace terciary_hh = inrange(u03_10a_, 50604,50606)
+}	
+// 507 Panama - 29 NS/NR (6.07%)
+if `country'==507 {
+	replace primary_hh   = inlist(u03_10a_, 50701,50702)
+	replace secondary_hh = inrange(u03_10a_, 50703,50706) 
+	replace terciary_hh  = inlist(u03_10a_, 50707,50708)
+}	
+// 509 Haití 
+if `country'==509 {
+	replace primary_hh   = inrange(u03_10a_, 50901,50908)
+	replace secondary_hh = inrange(u03_10a_, 50909,50915) 
+	replace terciary_hh  = u03_10a_==50916
 }
-
-if inlist(`country',505,510,758,767,502) { 
-g hh_secondary = (u0310_3==1) | (u0310_4==1) 
-label variable secondary "Secondary education"
+// 510 Perú
+if `country'==510 {
+	replace primary_hh   = inlist(u03_10a_, 51000,51001)
+	replace secondary_hh = u03_10a_ == 51002
+	replace terciary_hh  = inrange(u03_10a_, 51003,51005)
+}		
+// 520 Mexico - 47 NS/NR (3.16%)
+if `country'==520 {
+	replace primary_hh   = inrange(u03_10a_, 52001,52003)
+	replace secondary_hh = inlist(u03_10a_, 52004,52005,52007,52008) 
+	replace terciary_hh  = inrange(u03_10a_, 52009, 52013) | u03_10a_ == 52006 
+}	
+// 540 Argentina - 21 NS/NR (3.85%)
+if `country'==540 {
+	replace primary_hh   = inrange(u03_10a_, 54001,54003)
+	replace primary_hh   = u03_10a_== 54004 & inrange(u03_10b_,1,7) 
+	replace secondary_hh = u03_10a_ == 54004 & inrange(u03_10b_,8,9) 
+	replace secondary_hh = inlist(u03_10a_, 54005,54006) 
+	replace terciary_hh  = inrange(u03_10a_, 54007,54009) 
 }
+// 560 Chile -
+if `country'==560 {
+	replace primary_hh   = inrange(u03_10a_, 56000,56006)
+	replace secondary_hh = inrange(u03_10a_, 56007,56010)
+	replace terciary_hh  = inrange(u03_10a_, 56011,56016)
+}	
+// 570 Colombia - 
+if `country'==570 {
+	replace primary_hh   = inrange(u03_10a_, 57001,57003)
+	replace secondary_hh = inlist(u03_10a_, 57004,57005) 
+	replace terciary_hh  = inlist(u03_10a_, 57006,57007) 
+}	
+// 591 Bolivia - 26 NS/NR (3.72%)
+if `country'==591 {
+	replace primary_hh   = inlist(u03_10a_, 59101,59102,59107)
+	replace primary_hh   = u03_10a_== 59105 & inrange(u03_10b_,1,6) 
+	replace primary_hh   = inlist(u03_10a_, 59109,59110) 	// Equivalente a P1W1
+	replace secondary_hh = inlist(u03_10a_, 59103,59104,59106,59108)
+	replace secondary_hh = u03_10a_== 59105 & inrange(u03_10b_,7,8) 
+	replace terciary_hh  = inrange(u03_10a_, 59111,59116)
+}	
+// 592 Guyana - 44 NS/NR (9.32%)
+if `country'==592 {
+	replace primary_hh   = inrange(u03_10a_,59201,59203)
+	replace secondary_hh = u03_10a_ == 59204
+	replace terciary_hh  = inrange(u03_10a_, 59205,59208) 
+}
+// 593 Ecuador - 29 NS/NR (4.12%)
+if `country'==593 {
+	replace primary_hh   = inlist(u03_10a_, 59301, 59302)
+	replace primary_hh   = u03_10a_ == 59303 & inrange(u03_10b_,1,7) 
+	replace secondary_hh = inlist(u03_10a_, 59304,59305)
+	replace secondary_hh = u03_10a_ == 59303 & inrange(u03_10b_,8,10)
+	replace terciary_hh  = inrange(u03_10a_, 59306,59308)
+}
+// 595 Paraguay - 48 NS/NR (8.36%)
+if `country'==595 {
+	replace primary_hh   = inlist(u03_10a_, 59501,59502,59503,59505)
+	replace primary_hh   = u03_10a_ == 59504 & inrange(u03_10b_,1,6) 
+	replace secondary_hh = u03_10a_ == 59504 & inrange(u03_10b_,7,9)
+	replace secondary_hh = u03_10a_ == 59506
+	replace terciary_hh  = inrange(u03_10a_, 59507,59509)
+}	
+// 598 Uruguay - 
+if `country'==598 {
+	replace primary_hh   = inlist(u03_10a_, 59800,59801)
+	replace secondary_hh = inrange(u03_10a_, 59802,59805)
+	replace terciary_hh  = inrange(u03_10a_, 59806,59810)
 
-  if inlist(`country',570,876,592)  {
-g hh_secondary = (u0310_4==1) | (u0310_5==1) 
-label variable secondary "Secondary education"
-  }
-  
-  if inlist(`country',504,507)  {
-g hh_secondary = (u0310_4==1) | (u0310_5==1) | (u0310_6==1) 
-label variable secondary "Secondary education"
-  }
-  
-  if inlist(`country',501,506)  {
-g hh_secondary = (u0310_3==1) | (u0310_4==1) | (u0310_5==1)  
-label variable secondary "Secondary education"
-  } 
+}	
+if `country'==758 {
+// 758 St Lucia - 64 NS/NR (15.46%)
+	replace primary_hh   = inlist(u03_10a_, 75801,75802)
+	replace secondary_hh = u03_10a_ == 75803
+	replace terciary_hh  = inrange(u03_10a_, 75804,75807)
 
-* mexico   
- if inlist(`country',520)  {
-g hh_secondary =  (u0310_4==1) | (u0310_5==1) | (u0310_6==1) | (u0310_7==1)
-label variable secondary "Secondary education"
-  }  
-  
-*terciary 
-if inlist(`country',503) {
-g hh_terciary = (u0310_4==1) | (u0310_6==1) 
-label variable terciary "Terciary education" 
+}	
+if `country'==767{
+// 767 Dominica - 95 NS/NR (21.84%)
+	replace primary_hh   = inlist(u03_10a_, 76701, 76702)
+	replace secondary_hh = u03_10a_ == 76703
+	replace terciary_hh  = inrange(u03_10a_, 76704,76707)
+	
+}	
+// 809 República Dominicana -
+if `country'==809 {
+	replace primary_hh   = inlist(u03_10a_, 80901,80902,80909,80910)
+	replace secondary_hh = inlist(u03_10a_, 80903,80904)
+	replace terciary_hh  = inrange(u03_10a_, 80905,80908)
+
+}
+if `country'==876 {	
+// 876 Jamaica - 84 NS/NR (19.72%)
+	replace primary_hh = inrange(u03_10a_, 87601,87603)
+	replace secondary_hh = u03_10a_ == 87604
+	replace terciary_hh = inrange(u03_10a_, 87605,87608)
 } 
-
-if inlist(`country',505,510) { 
-g hh_terciary = (u0310_5==1) | (u0310_6==1) 
-label variable terciary "Terciary education" 
- }
-
-  if inlist(`country',570)  {
-g hh_terciary = (u0310_6==1) 
-label variable terciary "Terciary education" 
- } 
  
-  if inlist(`country',506)  {
-g hh_terciary = (u0310_6==1) | (u0310_7==1)  
-label variable terciary "Terciary education" 
- } 
- 
-  if inlist(`country',501,876,592)  {
-g hh_terciary = (u0310_6==1) | (u0310_7==1) | (u0310_8==1) 
-label variable terciary "Terciary education" 
- } 
 
-   if inlist(`country',504,507)  {
-g hh_terciary = (u0310_7==1) | (u0310_8==1) 
-label variable terciary "Terciary education" 
- } 
-* Mexico 
-  if inlist(`country',520)  {
-g hh_terciary = (u0310_8==1) | (u0310_9==1) | (u0310_10==1) | (u0310_11==1)
-label variable terciary "Terciary education"
-  }  
- 
-if inlist(`country',758,767,502)  {
-g hh_terciary =  (u0310_5==1) | (u0310_6==1) | (u0310_7==1) 
-label variable terciary "Terciary education" 
- }  
-*------
- 
-if  inlist(`country',509,540,591,593,595,598,809)  {
- g primary_less = (u309_1==1) | (u309_2==1) | (u309_3==1)
-label variable primary_less "Primary or less educated"
-
-g secondary = (u309_4==1) | (u309_5==1) | (u309_6==1)
-label variable secondary "Secondary education"
-
-g terciary = (u309_7==1) | (u309_8==1) 
-label variable terciary "Terciary education"
-
- 
- 
-* nivel educativo HH head 
-
-*tab u03_10a, g(u0310_)
-
-g hh_primary_less = (u0310_1==1) | (u0310_2==1) | (u0310_3==1)
-label variable primary_less "Primary or less educated"
-
-g hh_secondary = (u0310_4==1) | (u0310_5==1) | (u0310_6==1)
-label variable secondary "Secondary education"
-
-g hh_terciary = (u0310_7==1) | (u0310_8==1) 
-label variable terciary "Terciary education" 
- }
- 
 * Area 
 tab u03_08, nolabel
 g urban = (u03_08==1)
 g rural = (u03_08==2)
 
 *type of educational institution 
-g public  =.
-g private =.
 
 *-------------------------------Modules 
 
@@ -465,7 +579,6 @@ g income_reg_gov_pand = (u06_04==1)
 
 *----------2.3.2: Financial stress
 
-
 * Percentage of household that since 2021 to cover essential expenses (food, health or education) have been forced to:
 *Use savings 
 g fs_savings = .
@@ -475,10 +588,12 @@ g fs_rent_obligations = .
 g fs_new_labor = .
 *Insert a HH member under 18 to the labor force 
 g fs_child_labor = .
-
+g percep_inseg_violencia =.
+g aumento_v14_05 =.
+g aumento_v14_06 =. 
 *----------2.4: Food insecurity 
 g run_out_food = (u04_01==1)
-
+g run_out_food_pre_pan = (u04_04==1)
 
 *----------2.5: Education
 gen chil_06_17 =(w_cha_ph2w1 != .) if inrange(u07_19,6,17)
@@ -488,10 +603,21 @@ gen chil_01_05 =.
 * before the pandemic
 tab1 u08_02 u08_03 u08_05 u08_06 u08_08 u08_10, m
 g attendance_prepan_6_17 = inlist(u08_02,1,2)
-g attendance_6_17 = u08_03==1 & ((u08_05==1 | u08_05==2 & u08_06==1) | (u08_08==1 | u08_08==2 & u08_10==1))
+replace attendance_prepan_6_17 = . if u08_02 == 98 | u08_02 == . 
+replace attendance_prepan_6_17 = . if u08_02 == 3 & u07_19 == 6
+
+gen attendance_6_17 = . 
+replace attendance_6_17 = 0 if u08_02 != .
+replace attendance_6_17 = 1 if u08_05 == 1
+replace attendance_6_17 = 1 if u08_08 == 1
+replace attendance_6_17 = 1 if inlist(u08_06,1,17)
+replace attendance_6_17 = 1 if inlist(u08_10,1,2,15)
+replace attendance_6_17 = . if u08_05 == 98 & u08_08 == 98
 
 * schools offer face to face classes 
-g face_to_face_classes_6_17 = u08_04==1
+g face_to_face_classes_6_17 = u08_05==1 & attendance_6_17==1
+replace face_to_face_classes_6_17 = . if attendance_6_17 != 1
+replace face_to_face_classes_6_17 = 1 if u08_10 == 15
 
 *Under 5 years old children attending some form of education activities
 g attendance_prepan_1_5 = .
@@ -499,12 +625,11 @@ g attendance_1_5 = .
 
 *Perception of children learning in relation to before the pandemic 
 
-g learning_much_less =.
 g learning_less =.
 g learning_same =.
-g learning_more =.
-g learning_much_more =.
-g learning_DK =.
+g mixto1=.
+g privado1=.
+g publico1=.
 
 *----------2.6: Gender
 
