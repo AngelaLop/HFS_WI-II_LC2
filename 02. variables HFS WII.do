@@ -377,6 +377,14 @@ g rural = (v03_08a==2)
 
 local module labor
 
+/* Resumen variables de interes para resultados
+ocupado1
+desocupado1
+ocu_pea1
+trabajo remoto
+
+*/
+
 // Correccion no responde y valores fuera de rango a missing
 recode v05_03 v05_04 v05_10 v05_11 v05_17 v05_18 v05_19 v05_20 v05_24 (-98 -99 98 99=.)
 recode v05_11 (28=.)	// R Dom 1 caso que puede haber sido 98
@@ -537,6 +545,15 @@ gen		perdida01 = .
 replace perdida01 = 0 if ocupado0 == 1 
 replace perdida01 = 1 if ocupado0 == 1 & ocupado1 == 0
 lab var perdida01 "Perdida empleo pre pandemia resp. ocupados pre pandemia"
+
+
+* Ganancia empleo actual vs pre pandemia
+gen ganancia01 = . 
+replace ganancia01 = 1 if ocupado0 == 0 & ocupado1 == 1
+replace ganancia01 = 0 if ocupado0 == 0 & ocupado1 == 0
+replace ganancia01 = 0 if perdida01 == 1
+la var ganancia01 "Ganancia empleo pre pandemia resp. ocupados pre pandemia"
+
 
 gen		ocu0_desoc1 = .
 replace ocu0_desoc1 = 0 if ocupado0 == 1 
@@ -754,6 +771,31 @@ label val learning_same yn
 	replace mixto1 = 0 if inlist(v08_03b,59301,59303,59304)
 
 *----------2.6: Gender
+
+
+foreach v in v09_11 v09_12 v09_13 {
+	gen aumento_`v' = 1 if inlist(`v',1)
+	replace aumento_`v' = 0 if inlist(`v',2,3,4)
+	label var aumento_`v' "Indicador de aumento en el tiempo dedicado a la actividad"
+	label val aumento_`v' yn
+}
+
+egen aumento_domestica = rowmax(aumento*)
+label var aumento_domestica "Indicador de aumento en el tiempo dedicado a alguna tarea doméstica o de cuidado"
+
+* 9.5 Toma de decisiones antes de la pandemia (se debe mostrar para hombres y para mujeres)
+
+gen toma_dec_gasto0 = 1 if v09_08a == 1
+replace toma_dec_gasto0 = 0 if inlist(v09_08a,2,3,4)
+label var toma_dec_gasto0 "Indicador de si es la persona que principalmente tomaba las decisiones de gasto antes de la pandemia"
+label val toma_dec_gasto0 yn
+
+* 9.6 Toma de decisiones actualmente (se debe mostrar para hombres y para mujeres)
+
+gen toma_dec_gasto1 = 1 if v09_08b == 1
+replace toma_dec_gasto1 = 0 if inlist(v09_08b,2,3,4)
+label var toma_dec_gasto1 "Indicador de si es la persona que principalmente toma las decisiones de gasto actualmente"
+label val toma_dec_gasto1 yn
 
 *----------2.7: Health
 

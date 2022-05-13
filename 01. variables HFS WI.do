@@ -385,6 +385,64 @@ g rural = (u03_08==2)
 
 local module labor
 
+/*
+Porcentaje de personas (18+) que reporta haber perdido o ganado empleo
+-> perdida01
+-> ganancia01
+desagregar por 
+madre con hijis 0-5 
+Female
+Male
+Age 18-24
+Age 25-54
+Age 55-64
+Primary or less educated
+Secondary education
+Terciary education
+
+* Percentage point change in employed population with formal job 
+-> formal1
+-> formal0
+desagregar por 
+madre con hijos 0-5 
+Female
+Male
+Age 18-24
+Age 25-54
+Age 55-64
+Primary or less educated
+Secondary education
+Terciary education
+
+*Average working hours per week 
+-> horas1
+-> horas0
+desagregar por 
+madre con hijos 0-5 
+Female
+Male
+Age 18-24
+Age 25-54
+Age 55-64
+Primary or less educated
+Secondary education
+Terciary education
+
+* Percentage of remote working hours per week 
+-> workhome
+desagregar por 
+madre con hijos 0-5 
+Female
+Male
+Age 18-24
+Age 25-54
+Age 55-64
+Primary or less educated
+Secondary education
+Terciary education
+
+*/
+
 
 // Corregimos horas mayores al límite superior de 140
 	sum u05_04 u05_20 u05_24 
@@ -540,6 +598,13 @@ replace perdida01 = 0 if ocupado0 == 1
 replace perdida01 = 1 if ocupado0 == 1 & ocupado1 == 0
 lab var perdida01 "Perdida empleo pre pandemia resp. ocupados pre pandemia"
 
+* Ganancia empleo actual vs pre pandemia
+gen ganancia01 = . 
+replace ganancia01 = 1 if ocupado0 == 0 & ocupado1 == 1
+replace ganancia01 = 0 if ocupado0 == 0 & ocupado1 == 0
+replace ganancia01 = 0 if perdida01 == 1
+la var ganancia01 "Ganancia empleo pre pandemia resp. ocupados pre pandemia"
+
 gen		ocu0_desoc1 = .
 replace ocu0_desoc1 = 0 if ocupado0 == 1 
 replace ocu0_desoc1 = 1 if ocupado0 == 1 & desocupado1 == 1
@@ -632,6 +697,52 @@ g privado1=.
 g publico1=.
 
 *----------2.6: Gender
+
+
+/*
+Poblacion 18+ con empleo pre pandemia que declara no tener trabajo 
+-> perdida01
+desagregar por 
+genero
+pais
+mujeres con hijos 0-5
+mujeres con hijos 0-12
+
+Poblacion +18 increase in the amount of household work
+-> aumento_domestica
+
+Change in household decision making on HH spending on food, clothing, education, health or others
+-> toma_dec_gasto0
+-> toma_dec_gasto1
+
+*/
+
+
+foreach v in u09_11 u09_12 u09_13 {
+	gen aumento_`v' = 1 if inlist(`v',1)
+	replace aumento_`v' = 0 if inlist(`v',2,3,4)
+	label var aumento_`v' "Indicador de aumento en el tiempo dedicado a la actividad"
+	label val aumento_`v' yn
+}
+
+egen aumento_domestica = rowmax(aumento*)
+label var aumento_domestica "Indicador de aumento en el tiempo dedicado a alguna tarea doméstica o de cuidado"
+
+* 9.5 Toma de decisiones antes de la pandemia (se debe mostrar para hombres y para mujeres)
+
+gen toma_dec_gasto0 = 1 if u09_08a == 1
+replace toma_dec_gasto0 = 0 if inlist(u09_08a,2,3,4)
+label var toma_dec_gasto0 "Indicador de si es la persona que principalmente tomaba las decisiones de gasto antes de la pandemia"
+label val toma_dec_gasto0 yn
+
+* 9.6 Toma de decisiones actualmente (se debe mostrar para hombres y para mujeres)
+
+gen toma_dec_gasto1 = 1 if u09_08b == 1
+replace toma_dec_gasto1 = 0 if inlist(u09_08b,2,3,4)
+label var toma_dec_gasto1 "Indicador de si es la persona que principalmente toma las decisiones de gasto actualmente"
+label val toma_dec_gasto1 yn
+
+
 
 *----------2.7: Health
 
