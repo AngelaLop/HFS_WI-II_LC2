@@ -30,7 +30,7 @@ global w2 	"$data\Wave 2"
 preserve				
 	tempfile tablas
 	tempname ptablas
-	postfile `ptablas' str100(Country Wave Module Variable Indicator Cut) Value Numerator Demoninator using `tablas', replace
+	postfile `ptablas' str100(Country_id Country_name Wave Module Variable Indicator Cut) Value Numerator Demoninator using `tablas', replace
 
 /*==================================================
               1: first wave 
@@ -52,7 +52,7 @@ local module income_financial_food
 local cuts total 
 
 *Percentages income reduction, emergency CCT. Run out of food. 
-local variables income_red income_eme_gov_pand fs_savings fs_rent_obligations fs_new_labor fs_child_labor run_out_food income_reg_gov_prepand income_reg_gov_pand  attendance_6_17 face_to_face_classes_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same percep_inseg_violencia aumento_v14_05 aumento_v14_06 
+local variables income_red income_eme_gov_pand fs_savings fs_rent_obligations fs_new_labor fs_child_labor run_out_food income_reg_gov_prepand income_reg_gov_pand percep_inseg_violencia aumento_v14_05 aumento_v14_06 
 	foreach cut of local cuts{
 		foreach variable of local variables {
 		    include "$dos\03. formats.do"
@@ -60,20 +60,20 @@ local variables income_red income_eme_gov_pand fs_savings fs_rent_obligations fs
 			local value = r(mean)*100
 			local numer = r(sum)
 			local denom = r(sum_w)
-			post `ptablas' ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (`numer') (`denom') 
+			post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (`numer') (`denom') 
 		}
 
 local cuts total urban rural male female primary_hh secondary_hh terciary_hh publico1 privado1 mixto1		
 		
 		foreach cut of local cuts{
 		foreach variable of local variables {
-		    local attendance_6_17 face_to_face_classes_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same percep_inseg_violencia aumento_v14_05 aumento_v14_06 
+		    local attendance_6_17 face_to_face_classes_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same
 			include "$dos\03. formats.do"
 			sum `variable' [iw=w_hh_ph2w1] if `cut'==1
 			local value = r(mean)*100
 			local numer = r(sum)
 			local denom = r(sum_w)
-			post `ptablas' ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (`numer') (`denom') 
+			post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (`numer') (`denom') 
 		}	
 }			
 		
@@ -86,7 +86,7 @@ local cuts total urban rural male female primary_hh secondary_hh terciary_hh pub
 		local pan = r(mean)*100
 	
 		local value = `pan' - `prepan'
-		post `ptablas' ("`name'") ("`wave'") ("`module'") ("regular_CCT") ("Percentage point change of households that received regular government transfers") ("`cut'") (`value') (.) (.)
+		post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("regular_CCT") ("Percentage point change of households that received regular government transfers") ("`cut'") (`value') (.) (.)
 	} /*cierro cut*/
 
 
@@ -113,26 +113,26 @@ local cuts total
 
 	foreach cut of local cuts{
 		foreach variable of local variables {
-		    local variables income_red income_eme_gov_pand fs_savings fs_rent_obligations fs_new_labor fs_child_labor run_out_food income_reg_gov_prepand income_reg_gov_pand  
+		    local variables income_red income_eme_gov_pand fs_savings fs_rent_obligations fs_new_labor fs_child_labor run_out_food income_reg_gov_prepand income_reg_gov_pand percep_inseg_violencia aumento_v14_05 aumento_v14_06  
 			include "$dos\03. formats.do"
 			sum `variable' [iw=w_hh_ph2w2] if `cut'==1
 			local value = r(mean)*100
 			local numer = r(sum)
 			local denom = r(sum_w)
-			post `ptablas' ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (`numer') (`denom') 
+			post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (`numer') (`denom') 
 		}
 
 local cuts total urban rural male female primary_hh secondary_hh terciary_hh publico1 privado1 mixto1		
 		
 		foreach cut of local cuts{
 		foreach variable of local variables {
-		    local attendance_6_17 face_to_face_classes_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same percep_inseg_violencia aumento_v14_05 aumento_v14_06 
+		    local attendance_6_17 face_to_face_classes_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same 
 			include "$dos\03. formats.do"
 			sum `variable' [iw=w_hh_ph2w2] if `cut'==1
 			local value = r(mean)*100
 			local numer = r(sum)
 			local denom = r(sum_w)
-			post `ptablas' ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (`numer') (`denom') 
+			post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (`numer') (`denom') 
 		}	
 }		
 		
@@ -145,17 +145,50 @@ local cuts total urban rural male female primary_hh secondary_hh terciary_hh pub
 		local pan = r(mean)*100
 	
 		local value = `pan' - `prepan'
-		post `ptablas' ("`name'") ("`wave'") ("`module'") ("regular_CCT") ("Percentage point change of households that received regular government transfers") ("`cut'") (`value') (.) (.)
+		post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("regular_CCT") ("Percentage point change of households that received regular government transfers") ("`cut'") (`value') (.) (.)
 	} /*cierro cut*/
-
-
-
 }
 
 postclose `ptablas'
 use `tablas', clear
 save `tablas', replace 
 
+
+/*==================================================
+              4: LAC average 
+==================================================*/
+
+
+	tempfile tablas1
+	tempname ptablas1
+	postfile `ptablas1' str100(Country Wave Module Variable Indicator Cut) Value Numerator Demoninator using `tablas1', replace
+
+	
+	use `tablas'
+    local waves w1 w2 
+	local variables income_red income_eme_gov_pand fs_savings fs_rent_obligations fs_new_labor fs_child_labor run_out_food income_reg_gov_prepand income_reg_gov_pand percep_inseg_violencia aumento_v14_05 aumento_v14_06 attendance_6_17 face_to_face_classes_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same 
+	local cuts total urban rural male female primary_hh secondary_hh terciary_hh publico1 privado1 mixto1
+	
+	foreach wave of local waves {
+		foreach variable of local variables { 
+			foreach cut of local cuts {
+		
+			sum Numerator if  `wave' == Wave & `variable' == Variable & `cut'==Cut
+			local numer = r(sum)
+			sum Numerator if  `wave' == Wave & `variable' == Variable & `cut'==Cut
+			local denom = r(sum)
+			local value = (`numer' \ `denom' )*100
+			
+			post `ptablas' ("LAC") ("LAC") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (`numer') (`denom')
+			}
+		}
+	} 
+	append using `tablas'
+	postclose `ptablas1'
+	use `tablas1', clear
+	save `tablas1', replace 
+
+	
 export excel using "${results}/00.HFPS.xlsx", sh("indicadores", replace)  firstrow(var)
 
 restore
@@ -167,6 +200,4 @@ restore
 ==================================================*/
 
 
-/*==================================================
-              4: LAC average 
-==================================================*/
+
