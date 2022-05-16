@@ -860,9 +860,61 @@ Percentage of households that report issues with internet connection due to high
 
 */
 
-
 * Modificación conteo dispositivos para excluir NS/NR
 foreach x in u11_01 u11_02 u11_03 u11_04 u11_06 {
 	replace `x' = . if `x' == 99
 	}
 *	
+
+* Percentage of households that report issues with internet connection due to high cost of internet vs. power outages
+tab u11_11a 
+gen int_cost =. 
+replace int_cost = 0 if u11_11a == 2
+replace int_cost = 1 if u11_11a == 1
+la var int_cost "Hogares que reportan problemas con internet debido a alto costo"
+
+tab u11_11c
+gen power_outages =. 
+replace power_outages = 0 if u11_11c == 2
+replace power_outages = 1 if u11_11c == 1
+la var power_outages "Hogares que reportan problemas con internet debido a cortes de energia"
+
+* Percentage of total, existing users and new users of mobile wallet
+
+gen old_user=. 
+replace old_user = 1 if u11_17  ==1
+replace old_user = 0 if (u11_17 !=1 & u11_17 !=.)
+la var old_user "Antiguo usuario de mobile wallet"
+
+gen new_user =. 
+replace new_user = 1 if (u11_15 == 1 | u11_16 ==1) 
+replace new_user = 0 if (u11_15 == 0 & u11_16 ==0)
+replace new_user = 0 if (new_user == 1 & old_user ==1)
+la var new_user "Nuevo usuario de mobile wallet durante la pandemia"
+
+gen total_users=. 
+replace total_users = 1 if (old_user == 1 | new_user == 1)
+la var total_users "Total usuarios de mobile wallet"
+
+* Percentage of respondents who indicate an increase in the use of mobile banking vs. the use of apps/webpage for transactions
+
+gen increase_banking=. 
+replace increase_banking = 1 if u11_23 ==1 
+la var increase_banking "Personas que indican un aumento en el uso de mobile banking para transacciones"
+
+gen increase_apps=. 
+replace increase_apps = 1 if u11_25 ==1
+la var increase_apps "Personas que indican un aumento en el uso de apps/webpage para transacciones"
+
+
+
+
+
+
+
+
+
+
+
+
+
