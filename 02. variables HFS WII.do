@@ -677,8 +677,76 @@ label val toma_dec_gasto1 yn
 
 *----------2.7: Health
 
+* hea1. Proporción de hogares en los que algún miembro necesitó un servicio de salud 
+* Numerador: Todos los hogares en los que al menos un miembro necesitó un servicio de salud
+* Denominador: Todos los hogares
+gen hea1 = .
+replace hea1 = 1 if v02_02==1
+replace hea1 = 0 if v02_02==2
+replace hea1 = . if v02_02==98
+la var hea1 "Proportion of hhs at least one member who needed health services"
+
+*hea2. Proporción de hogares en los que algún miembro no pudo acceder a un servicio de salud cuando lo necesitó
+*Numerador: Todos los hogares en los que al menos algún miembro no puedo acceder a un servicio de salud cuando lo necesitó
+*Denominador: Todos los hogares en los que al menos algún miembro necesitó un servicio de salud 
+
+gen hea2 = 0 if hea1 == 1
+foreach x in a b c d e f g h i j k l m z {
+	recode v02_03`x' (0=2) 
+}
+foreach x in a b c d e f g h i j k l m z {
+	replace hea2 = 1 if hea1 == 1 & v02_03`x'== 1 & v02_04`x'== 3
+}
+
+la var hea2 "Proportion of hhs could not access health services when needed"
+
+
+*hea3. Vacunación - estatus
+gen hea3 = 1 if v02_09 == 1
+replace hea3 = 2 if v02_10 == 1
+replace hea3 = 3 if inlist(v02_10,2,3)
+la def hea3 1 "Vacunado" 2 "No vacunado, planea vacunarse" 3 "No vacunado, no planea vacunarse"
+la val hea3 hea3
+la var hea3 "Estatus de vacunación"
+
+*hea4. Vaccination reluctancy - CAMBIAR DE NOMBRE PARA NO CONFUNDIR CON EL INDICADOR DEL TWO-PAGER
+* numerator: all hhs where respondent has not received the vaccine yet and is not planing to receive the vaccine
+* denominator: all hhs where respondent has not received the vaccine yet 
+gen hea4 = 0 if v02_09 != 1
+replace hea4 = 1 if (v02_10==2 | v02_10==3)
+lab val hea4 hea4
+
+* hea5. mental health index
+* definition: the average value of the following components: difficulty sleeping; anxiety, nervousness or worry; aggressive attitudes or irritability with other household members; conflicts or arguments with other people; feeling of loneliness
+foreach x in b c d {
+	recode v02_12`x' (98=.) (2=0)
+}
+egen hea5 = rowmean(v02_12b v02_12c v02_12d)
+
+gen hea6 = v02_12b
+gen hea7 = v02_12c
+gen hea8 = v02_12d
+
+**Alguna afectacion mental
+gen hea9 = cond(v02_12b == 1 | v02_12c == 1 | v02_12d == 1,1,0)
+replace hea9 = . if v02_12b == 98 & v02_12c == 98 & v02_12d == 98
+la def hea9 0 "No sufrió ninguna afectación" 1 "Sufrió alfuna afectación"
+la val hea9 hea9
+la var hea9 "Indicador de afectaciones a la salud mental durante la pandemia"
+
+*hea10. Ha recibido apoyo psicologico para abordar necesidades emocionales
+gen hea10 = .
+replace hea10 = 1 if v02_12f == 1
+replace hea10 = 0 if v02_12f == 2
+
+
 *----------3.7: Digital and finance
 
+* Modificación conteo dispositivos para excluir NS/NR
+foreach x in v11_01 v11_02 v11_03 v11_04 v11_06 {
+	replace `x' = . if `x' == 99
+	}
+*	
 
 
 
