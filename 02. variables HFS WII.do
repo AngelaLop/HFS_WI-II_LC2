@@ -50,7 +50,7 @@ tab1 v03_09a v03_09b, m
 gen		primary = .
 gen 	secondary = .
 g 		terciary = .
-local country 507
+
 // 501 Belice 
 if `country'==501 {
 	replace primary   = inlist(v03_09a, 50101,50102)
@@ -145,8 +145,8 @@ if `country'==591 {
 // 592 Guyana 
 if `country'==592 {
 	replace primary = inrange(v03_09a,59201,59203)
-	replace educ_cursada = v03_09a == 59204
-	replace educ_cursada = inrange(v03_09a, 59205,59208) 
+	replace secondary = v03_09a == 59204
+	replace secondary = inrange(v03_09a, 59205,59208) 
 }
 // 593 Ecuador	 
 if `country'==593 {
@@ -375,7 +375,6 @@ g rural = (v03_08a==2)
 
 *----------2.2: Labor Market 
 
-local module labor
 
 /* Resumen variables de interes para resultados
 ocupado1
@@ -871,29 +870,29 @@ foreach x in v11_01 v11_02 v11_03 v11_04 v11_06 {
 *
 
 * Percentage of households that report issues with internet connection due to high cost of internet vs. power outages
-tab v11_11a 
+cap tab v11_11a 
 gen int_cost =. 
-replace int_cost = 0 if v11_11a == 2
-replace int_cost = 1 if v11_11a == 1
+cap replace int_cost = 0 if v11_11a == 2
+cap replace int_cost = 1 if v11_11a == 1
 la var int_cost "Hogares que reportan problemas con internet debido a alto costo"
 
-tab v11_11c
+cap tab v11_11c
 gen power_outages =. 
-replace power_outages = 0 if v11_11c == 2
-replace power_outages = 1 if v11_11c == 1
+cap replace power_outages = 0 if v11_11c == 2
+cap replace power_outages = 1 if v11_11c == 1
 la var power_outages "Hogares que reportan problemas con internet debido a cortes de energia"
 
 * Percentage of total, existing users and new users of mobile wallet
 
 gen old_user=. 
-replace old_user = 1 if v11_17  ==1
-replace old_user = 0 if (v11_17 !=1 & v11_17 !=.)
+cap replace old_user = 1 if v11_17  ==1
+cap replace old_user = 0 if (v11_17 !=1 & v11_17 !=.)
 la var old_user "Antiguo usuario de mobile wallet"
 
 gen new_user =. 
-replace new_user = 1 if (v11_15 == 1 | v11_16 ==1) 
-replace new_user = 0 if (v11_15 == 0 & v11_16 ==0)
-replace new_user = 0 if (new_user == 1 & old_user ==1)
+cap replace new_user = 1 if (v11_15 == 1 | v11_16 ==1) 
+cap replace new_user = 0 if (v11_15 == 0 & v11_16 ==0)
+cap replace new_user = 0 if (new_user == 1 & old_user ==1)
 la var new_user "Nuevo usuario de mobile wallet durante la pandemia"
 
 gen total_users=. 
@@ -903,11 +902,11 @@ la var total_users "Total usuarios de mobile wallet"
 * Percentage of respondents who indicate an increase in the use of mobile banking vs. the use of apps/webpage for transactions
 
 gen increase_banking=. 
-replace increase_banking = 1 if v11_23 ==1 
+cap replace increase_banking = 1 if v11_23 ==1 
 la var increase_banking "Personas que indican un aumento en el uso de mobile banking para transacciones"
 
 gen increase_apps=. 
-replace increase_apps = 1 if v11_25 ==1
+cap replace increase_apps = 1 if v11_25 ==1
 la var increase_apps "Personas que indican un aumento en el uso de apps/webpage para transacciones"
 
 

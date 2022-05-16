@@ -60,6 +60,7 @@ if "`variable'"=="learning_same" 			local label "Perception of children learning
 if "`variable'"=="percep_inseg_violencia"   local label "Perception of increase of domestic violence and insecurity in respondents neighborhood in relation to before the pandemic"
 if "`variable'"=="aumento_v14_05" 			local label "Perception of increase of insecurity in respondents neighborhood in relation to before the pandemic"
 if "`variable'"=="aumento_v14_06"			local label "Perception of increase of domestic violence in respondents neighborhood in relation to before the pandemic"
+if "`variable'"=="regular_CCT"			local label "Percentage point change of households that received regular government transfers"
 
 if "`variable'"=="income_red" 			local module "Income"
 if "`variable'"=="income_eme_gov_pand"  local module "Income"
@@ -67,9 +68,11 @@ if "`variable'"=="fs_savings" 			local module "Coping"
 if "`variable'"=="fs_rent_obligations"  local module "Coping"
 if "`variable'"=="fs_new_labor" 		local module "Coping"
 if "`variable'"=="fs_child_labor" 		local module "Coping"
-if "`variable'"=="run_out_food" 		local module "Coping"
+if "`variable'"=="run_out_food" 		local module  "Food insecurity"
+if "`variable'"=="run_out_food_pre_pan" local module  "Food insecurity"
 if "`variable'"=="income_reg_gov_prepand" local module "Income"
 if "`variable'"=="income_reg_gov_pand"    local module "Income"
+if "`variable'"=="regular_CCT"            local module "Income"
 if "`variable'"=="attendance_prepan_6_17" local module "Education"
 if "`variable'"=="attendance_6_17" 		  local module "Education"
 if "`variable'"=="face_to_face_classes_6_17" local module "Education"
@@ -80,7 +83,7 @@ if "`variable'"=="learning_same" 			local module "Education"
 if "`variable'"=="percep_inseg_violencia"   local module "Coping"
 if "`variable'"=="aumento_v14_05" 			local module "Coping"
 if "`variable'"=="aumento_v14_06"			local module "Coping"
- 
+
  
  
  

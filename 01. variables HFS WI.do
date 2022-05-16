@@ -718,31 +718,25 @@ Change in household decision making on HH spending on food, clothing, education,
 
 */
 
-
+/*
 foreach v in u09_11 u09_12 u09_13 {
 	gen aumento_`v' = 1 if inlist(`v',1)
 	replace aumento_`v' = 0 if inlist(`v',2,3,4)
 	label var aumento_`v' "Indicador de aumento en el tiempo dedicado a la actividad"
 	label val aumento_`v' yn
 }
-
+*/
 egen aumento_domestica = rowmax(aumento*)
 label var aumento_domestica "Indicador de aumento en el tiempo dedicado a alguna tarea doméstica o de cuidado"
 
 * 9.5 Toma de decisiones antes de la pandemia (se debe mostrar para hombres y para mujeres)
 
-gen toma_dec_gasto0 = 1 if u09_08a == 1
-replace toma_dec_gasto0 = 0 if inlist(u09_08a,2,3,4)
-label var toma_dec_gasto0 "Indicador de si es la persona que principalmente tomaba las decisiones de gasto antes de la pandemia"
-label val toma_dec_gasto0 yn
+gen toma_dec_gasto0 = .
 
 * 9.6 Toma de decisiones actualmente (se debe mostrar para hombres y para mujeres)
 
-gen toma_dec_gasto1 = 1 if u09_08b == 1
-replace toma_dec_gasto1 = 0 if inlist(u09_08b,2,3,4)
-label var toma_dec_gasto1 "Indicador de si es la persona que principalmente toma las decisiones de gasto actualmente"
-label val toma_dec_gasto1 yn
-
+gen toma_dec_gasto1 = .
+*/
 
 *----------2.7: Health
 
@@ -784,10 +778,10 @@ la var hea1 "Proportion of hhs at least one member who needed health services"
 
 gen hea2 = 0 if hea1 == 1
 foreach x in a b c d e f g h i j k l m z {
-	recode u02_03`x' (0=2) 
+	cap recode u02_03`x' (0=2) 
 }
 foreach x in a b c d e f g h i j k l m z {
-	replace hea2 = 1 if hea1 == 1 & u02_03`x'== 1 & u02_04`x'== 3
+	cap replace hea2 = 1 if hea1 == 1 & u02_03`x'== 1 & u02_04`x'== 3
 }
 
 la var hea2 "Proportion of hhs could not access health services when needed"
@@ -828,8 +822,7 @@ la var hea9 "Indicador de afectaciones a la salud mental durante la pandemia"
 
 *hea10. Ha recibido apoyo psicologico para abordar necesidades emocionales
 gen hea10 = .
-replace hea10 = 1 if u02_12f == 1
-replace hea10 = 0 if u02_12f == 2
+
 
 
 
