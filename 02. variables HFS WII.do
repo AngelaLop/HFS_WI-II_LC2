@@ -836,6 +836,11 @@ la def hea3 1 "Vacunado" 2 "No vacunado, planea vacunarse" 3 "No vacunado, no pl
 la val hea3 hea3
 la var hea3 "Estatus de vacunación"
 
+gen heal3=. 
+replace heal3 = 1 if hea3 == 1
+replace heal3 = 0 if (hea3 !=1 & hea3 !=.)
+la var heal3 "Vacunados"
+
 *hea4. Vaccination reluctancy - CAMBIAR DE NOMBRE PARA NO CONFUNDIR CON EL INDICADOR DEL TWO-PAGER
 * numerator: all hhs where respondent has not received the vaccine yet and is not planing to receive the vaccine
 * denominator: all hhs where respondent has not received the vaccine yet 

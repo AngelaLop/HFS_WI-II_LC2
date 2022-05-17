@@ -76,7 +76,7 @@ if "`variable'"=="hea2"						local label "Proportion of hhs could not access hea
 if "`variable'"=="heal3"					local label "Self-reported vaccination rates"
 if "`variable'"=="hea4"						local label "Percentage of respondents not vaccinated nor willing to get one (vaccination reluctancy)"
 if "`variable'"=="hea9"						local label "Indicator of effects on mental health during the pandemic"
-if "`variable'"=="hea10"						local label "Has received psychological support to address emotional needs"
+if "`variable'"=="hea10"					local label "Has received psychological support to address emotional needs"
 if "`variable'"=="int_cost"					local label "Percentage of households that report issues with internet connection due to high cost of internet"
 if "`variable'"=="power_outages"			local label "Percentage of households that report issues with internet connection due to power outages"
 if "`variable'"=="old_user"					local label "Existing users of mobile wallet"
