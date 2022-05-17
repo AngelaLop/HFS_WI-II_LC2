@@ -55,6 +55,12 @@ tab u03_04,m
 g female = (u03_04==2)
 g male   = (u03_04==1)
 
+*
+gen mother_0_5 =.
+cap replace mother_0_5 = (parent_0_5_hh==1) & (female==1)
+cap label variable mother_0_5 "Mother of children 0-5years old"
+
+
 * nivel educativo 
 tab u03_09a, g(u309_)
 

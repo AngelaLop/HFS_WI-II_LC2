@@ -18,8 +18,7 @@ Output:
 
 
 *----------1.1: cuts 
-*gen mother_0_5
-*label variable mother_0_5 "Mother of children 0-5years old"
+
 g total = 1
 * 3.03 Edad
 tab v03_03, m
@@ -39,6 +38,10 @@ tab v03_04,m
 
 g female = (v03_04==2)
 g male   = (v03_04==1)
+
+gen mother_0_5 = (parent_0_5_hh==1) & (female==1)
+label variable mother_0_5 "Mother of children 0-5years old"
+
 
 * nivel educativo  
 *tab v03_09a, g(v309_)
