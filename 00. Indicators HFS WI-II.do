@@ -188,7 +188,7 @@ local cuts total male female primary secondary terciary age_18_24 age_25_54 age_
 			foreach variable of local variables {
 		   
 			include "$dos\03. formats.do"
-			sum `variable' [iw=w_hh_ph2w1] if `cut'==1
+			sum `variable' [iw=w_hh_ph2w2] if `cut'==1
 			local value = r(mean)*100
 			local numer = r(sum)
 			local denom = r(sum_w)
@@ -218,14 +218,14 @@ local cuts total male female primary secondary terciary age_18_24 age_25_54 age_
  
  foreach cut of local cuts{
 		qui include "$dos\03. formats.do"
-		sum `variable1' [iw=w_hh_ph2w1], meanonly
+		sum `variable1' [iw=w_hh_ph2w2], meanonly
 		local prepan = r(mean)*100
-		sum `variable2' [iw=w_hh_ph2w1], meanonly
+		sum `variable2' [iw=w_hh_ph2w2], meanonly
 		local pan = r(mean)*100
 	
 		local value = `pan' - `prepan'
 		post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (.) (.)
-
+ }
 }
 
 postclose `ptablas'
