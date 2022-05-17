@@ -47,6 +47,7 @@ label variable age_25_54 "Aged 25-54 years old"
 g age_55_65 = inrange(u03_03,55,65)
 label variable age_55_65 "Aged 55-65 years old"
 
+
 * 3.04 Sexo
 
 tab u03_04,m
