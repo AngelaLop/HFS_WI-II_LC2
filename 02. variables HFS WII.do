@@ -771,6 +771,9 @@ label val learning_same yn
 
 *----------2.6: Gender
 
+gen lost =. 
+replace lost = perdida01
+la var lost "Job loss in the pandemic"
 
 foreach v in v09_11 v09_12 v09_13 {
 	gen aumento_`v' = 1 if inlist(`v',1)
@@ -835,7 +838,7 @@ la var hea3 "Estatus de vacunación"
 * denominator: all hhs where respondent has not received the vaccine yet 
 gen hea4 = 0 if v02_09 != 1
 replace hea4 = 1 if (v02_10==2 | v02_10==3)
-lab val hea4 hea4
+la var hea4 "Percentage of respondents not vaccinated nor willing to get one (vaccination reluctancy"
 
 * hea5. mental health index
 * definition: the average value of the following components: difficulty sleeping; anxiety, nervousness or worry; aggressive attitudes or irritability with other household members; conflicts or arguments with other people; feeling of loneliness
