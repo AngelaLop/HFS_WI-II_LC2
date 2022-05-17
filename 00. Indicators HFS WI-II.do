@@ -41,9 +41,12 @@ local countries 501 502 503 504 505 506 507 509 510 520 540 560 570 591 592 593 
 foreach country of local countries {
 
 use "$w1\\`country'_PH2W1_CT_Casos", replace 
-*destring folio, replace 
+
 *save "$w1\\`country'_PH2W1_CT_Casos", replace 
 merge 1:1 folio using "$w1\\`country'_PH2W1_CT_Ninos", force 
+drop _merge 
+destring folio, replace 
+cap merge 1:1 folio using "$w1\Roster\hijos\\`country'_PH2W1_RD_hijos", force 
 qui include "$dos\01. variables HFS WI.do" // gracias por explicarme
 
 local wave w1
@@ -79,7 +82,7 @@ local cuts total urban rural male female primary_hh secondary_hh terciary_hh pub
 			}	
 		}
 		
-local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65		
+local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5	
  local variables perdida01 ganancia01
  
 		foreach cut of local cuts{
@@ -110,7 +113,7 @@ local cuts total male female primary secondary terciary age_18_24 age_25_54 age_
 		local value = `pan' - `prepan'
 		post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (.) (.)
 
- local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65	
+ local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5
  local variable pp_formal
  local variable1 formal0
  local variable2 formal1
@@ -138,6 +141,8 @@ foreach country of local countries {
 
 use "$w2\\`country'_PH2W2_CP_Casos", replace 
 merge 1:1 folio using "$w2\\`country'_PH2W2_CP_Ninos", force 
+drop _merge 
+cap merge 1:1 folio using "$w2\Roster\hijos\\`country'_PH2W2_RD_hijos", force 
 qui include "$dos\\02. variables HFS WII.do"
 local wave w2
 
