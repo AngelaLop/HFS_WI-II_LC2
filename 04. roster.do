@@ -58,6 +58,7 @@ egen parent_0_12_hh = max(parent_0_12) , by(folio)
 keep if id_nna ==1
 keep folio parent_0_5_hh parent_0_12_hh
 destring folio, replace 
+duplicates drop
 save "$w1\Roster\hijos\\`country'_PH2W1_RD_hijos", replace 
 }
 }
