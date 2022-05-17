@@ -55,7 +55,8 @@ local wave w1
 
 *Percentages 
 local cuts total  
-local variables income_red income_eme_gov_pand fs_savings fs_rent_obligations fs_new_labor fs_child_labor run_out_food run_out_food_pre_pan income_reg_gov_prepand income_reg_gov_pand percep_inseg_violencia aumento_v14_05 aumento_v14_06 
+local variables income_red income_eme_gov_pand fs_savings fs_rent_obligations fs_new_labor fs_child_labor run_out_food run_out_food_pre_pan /*
+				*/income_reg_gov_prepand income_reg_gov_pand percep_inseg_violencia aumento_v14_05 aumento_v14_06 
 	foreach cut of local cuts{
 		foreach variable of local variables {
 		    include "$dos\03. formats.do"
@@ -82,8 +83,10 @@ local cuts total urban rural male female primary_hh secondary_hh terciary_hh pub
 			}	
 		}
 		
+
 local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5	
- local variables perdida01 ganancia01
+ local variables perdida01 ganancia01 horas0 horas1 workhome lost hea2 heal3 hea4 old_user new_user total_users increase_banking increase_apps
+
  
 		foreach cut of local cuts{
 			foreach variable of local variables {
@@ -148,7 +151,8 @@ local wave w2
 
 * Percentages 
 local cuts total 
-local variables income_red income_eme_gov_pand fs_savings fs_rent_obligations fs_new_labor fs_child_labor run_out_food run_out_food_pre_pan income_reg_gov_prepand income_reg_gov_pand percep_inseg_violencia aumento_v14_05 aumento_v14_06  
+local variables income_red income_eme_gov_pand fs_savings fs_rent_obligations fs_new_labor fs_child_labor run_out_food run_out_food_pre_pan /*
+				*/ income_reg_gov_prepand income_reg_gov_pand percep_inseg_violencia aumento_v14_05 aumento_v14_06  
 
 	foreach cut of local cuts{
 		foreach variable of local variables {
@@ -174,7 +178,23 @@ local variables attendance_6_17 face_to_face_classes_6_17 attendance_prepan_1_5 
 			local denom = r(sum_w)
 			post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (`numer') (`denom') 
 			}	
-		}		
+		}
+		
+local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5		
+ local variables perdida01 ganancia01 horas0 horas1 workhome lost aumento_domestica toma_dec_gasto0 toma_dec_gasto1 hea2 heal3 hea4 hea9 hea9 /*
+		*/ int_cost power_outagesold_user new_user total_users increase_banking increase_apps
+ 
+		foreach cut of local cuts{
+			foreach variable of local variables {
+		   
+			include "$dos\03. formats.do"
+			sum `variable' [iw=w_hh_ph2w1] if `cut'==1
+			local value = r(mean)*100
+			local numer = r(sum)
+			local denom = r(sum_w)
+			post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (`numer') (`denom') 
+			}	
+		}	
 		
 *Percentage point change  
 
@@ -186,6 +206,21 @@ local variables attendance_6_17 face_to_face_classes_6_17 attendance_prepan_1_5 
 		sum `variable1' [iw=w_hh_ph2w2], meanonly
 		local prepan = r(mean)*100
 		sum `variable2' [iw=w_hh_ph2w2], meanonly
+		local pan = r(mean)*100
+	
+		local value = `pan' - `prepan'
+		post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (.) (.)
+		
+local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5	
+ local variable pp_formal
+ local variable1 formal0
+ local variable2 formal1
+ 
+ foreach cut of local cuts{
+		qui include "$dos\03. formats.do"
+		sum `variable1' [iw=w_hh_ph2w1], meanonly
+		local prepan = r(mean)*100
+		sum `variable2' [iw=w_hh_ph2w1], meanonly
 		local pan = r(mean)*100
 	
 		local value = `pan' - `prepan'
@@ -210,7 +245,11 @@ save `tablas', replace
 	
 	*use `tablas'
     local waves w1 w2 
-	local variables income_red income_eme_gov_pand fs_savings fs_rent_obligations fs_new_labor fs_child_labor run_out_food run_out_food_pre_pan income_reg_gov_prepand income_reg_gov_pand percep_inseg_violencia aumento_v14_05 aumento_v14_06 attendance_6_17 face_to_face_classes_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same regular_CCT
+	local variables income_red income_eme_gov_pand fs_savings fs_rent_obligations fs_new_labor fs_child_labor run_out_food run_out_food_pre_pan /*
+					*/income_reg_gov_prepand income_reg_gov_pand percep_inseg_violencia aumento_v14_05 aumento_v14_06 attendance_6_17 /*
+					*/face_to_face_classes_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same regular_CCT /*
+					*/ perdida01 ganancia01 horas0 horas1 workhome lost aumento_domestica toma_dec_gasto0 toma_dec_gasto1 hea2 heal3 hea4 hea9 hea9 /*
+					*/ int_cost power_outagesold_user new_user total_users increase_banking increase_apps
 	
 	local cuts total urban rural male female primary_hh secondary_hh terciary_hh publico1 privado1 mixto1
 	

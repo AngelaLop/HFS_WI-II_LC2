@@ -841,7 +841,7 @@ la var hea3 "Estatus de vacunación"
 * denominator: all hhs where respondent has not received the vaccine yet 
 gen hea4 = 0 if v02_09 != 1
 replace hea4 = 1 if (v02_10==2 | v02_10==3)
-la var hea4 "Percentage of respondents not vaccinated nor willing to get one (vaccination reluctancy"
+la var hea4 "Percentage of respondents not vaccinated nor willing to get one (vaccination reluctancy)"
 
 * hea5. mental health index
 * definition: the average value of the following components: difficulty sleeping; anxiety, nervousness or worry; aggressive attitudes or irritability with other household members; conflicts or arguments with other people; feeling of loneliness
@@ -865,6 +865,7 @@ la var hea9 "Indicador de afectaciones a la salud mental durante la pandemia"
 gen hea10 = .
 replace hea10 = 1 if v02_12f == 1
 replace hea10 = 0 if v02_12f == 2
+la var hea10 "Ha recibido apoyo psicologico para abordar necesidades emocionales"
 
 
 *----------3.7: Digital and finance
