@@ -655,20 +655,28 @@ lab var for0_inf1 "Ocupados formales que pasaron a informalidad"
 local module income 
 
 * Percentage of households who report a reduction of income since:
-tab u06_17
-g income_red = (u06_17==3)
+
+gen income_red = 0 if u06_17 != 98
+replace income_red = 1 if (u06_17==3)
 label variable income_red "Beginning of 2021"
 
 * Percentage of households who received emergency government transfers 
-tab u06_06
-g income_eme_gov_pand=(u06_06==1)
+
+g income_eme_gov_pand = .
+replace income_eme_gov_pand= 1 if (u06_06==1)
+replace income_eme_gov_pand= 0 if (u06_06==2)
+
 
 * Percentage point change of households that received regular government transfers 
 * before the pandemic
 tab u06_03, m
-g income_reg_gov_prepand = (u06_03==1)
+g income_reg_gov_prepand = .
+replace income_reg_gov_prepand =1 if (u06_03==1)
+replace income_reg_gov_prepand =0 if (u06_03==2)
 * during the pandemic 
-g income_reg_gov_pand = (u06_04==1)
+g income_reg_gov_pand = .
+replace income_reg_gov_pand =1 if (u06_04==1)
+replace income_reg_gov_pand =0 if (u06_04==2)
 
 *----------2.3.2: Financial stress
 
