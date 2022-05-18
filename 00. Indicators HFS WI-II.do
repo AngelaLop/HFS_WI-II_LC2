@@ -85,7 +85,7 @@ local cuts total urban rural male female primary_hh secondary_hh terciary_hh pub
 		
 
 local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5	
- local variables activo1 activo0 ocu_pea0 ocupado1 ocupado0 ocu0_desoc1 ocu0_inac1 perdida01 ganancia01 workhome lost hea2 heal3 hea4 old_user new_user total_users increase_banking increase_apps
+ local variables activo1 activo0 ocu_pea0 ocupado1 ocupado0 ocu0_desoc1 ocu0_inac1 perdida01 ganancia01 workhome lost hea2 heal3 hea4 old_user new_user  
 
  
 		foreach cut of local cuts{
@@ -212,8 +212,8 @@ local variables attendance_6_17 face_to_face_classes_6_17 attendance_prepan_1_5 
 		}
 		
 local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5		
- local variables activo1 activo0 ocu_pea0 ocupado1 ocupado0 ocu0_desoc1 ocu0_inac1 perdida01 ganancia01 horas0 horas1 workhome lost aumento_domestica toma_dec_gasto0 toma_dec_gasto1 hea2 heal3 hea4 hea9 hea10 /*
-		*/  sold_user new_user total_users  
+ local variables activo1 activo0 ocu_pea0 ocupado1 ocupado0 ocu0_desoc1 ocu0_inac1 perdida01 ganancia01 workhome lost aumento_domestica toma_dec_gasto0 toma_dec_gasto1 hea2 heal3 hea4 hea9 hea10 /*
+		*/  old_user new_user   
  
 		foreach cut of local cuts{
 			foreach variable of local variables {
@@ -281,14 +281,14 @@ local cuts total male female primary secondary terciary age_18_24 age_25_54 age_
  
  foreach cut of local cuts{
 		qui include "$dos\03. formats.do"
-		sum `variable1' [iw=w_hh_ph2w1], meanonly
+		sum `variable1' [iw=w_hh_ph2w2], meanonly
 		local prepan = r(mean)*100
-		sum `variable2' [iw=w_hh_ph2w1], meanonly
+		sum `variable2' [iw=w_hh_ph2w2], meanonly
 		local pan = r(mean)*100
 	
 		local value = `pan' - `prepan'
 		post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (.) (.)
-
+ }
 }
 
 postclose `ptablas'
@@ -312,7 +312,7 @@ save `tablas', replace
 					*/ income_reg_gov_prepand income_reg_gov_pand percep_inseg_violencia aumento_v14_05 aumento_v14_06 attendance_6_17 /*
 					*/ face_to_face_classes_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same regular_CCT /*
 					*/ perdida01 ganancia01 horas0 horas1 workhome lost aumento_domestica toma_dec_gasto0 toma_dec_gasto1 hea2 heal3 hea4 hea9 hea10 /*
-					*/ int_cost power_outage sold_user new_user total_users increase_banking increase_apps
+					*/ old_user new_user  activo1 activo0 ocu_pea0 ocupado1 ocupado0 ocu0_desoc1 ocu0_inac1
 	
 	local cuts total urban rural male female primary_hh secondary_hh terciary_hh publico1 privado1 mixto1
 	
@@ -325,6 +325,8 @@ save `tablas', replace
 			sum Demoninator if  Wave=="`wave'" & Variable=="`variable'" & Cut=="`cut'"
 			local denom = r(sum)
 			local value = ( `numer' / `denom' ) *100
+			if "variable"=="horas0" local value = ( `numer' / `denom' )
+			if "variable"=="horas1" local value = ( `numer' / `denom' )
 			sum Value  if Wave=="`wave'" & Variable=="`variable'" & Cut=="`cut'"
 			local mean_lac = r(mean)
 			
@@ -334,7 +336,7 @@ save `tablas', replace
 		}
 	
 	}	
-	} 
+	
 	
 	postclose `ptablas1'
 	use `tablas1', clear
