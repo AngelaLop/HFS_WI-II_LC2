@@ -85,7 +85,7 @@ local cuts total urban rural male female primary_hh secondary_hh terciary_hh pub
 		
 
 local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5	
- local variables perdida01 ganancia01 workhome lost hea2 heal3 hea4 old_user new_user total_users increase_banking increase_apps
+ local variables activo1 activo0 ocu_pea0 ocupado1 ocupado0 ocu0_desoc1 ocu0_inac1 perdida01 ganancia01 workhome lost hea2 heal3 hea4 old_user new_user total_users increase_banking increase_apps
 
  
 		foreach cut of local cuts{
@@ -212,7 +212,7 @@ local variables attendance_6_17 face_to_face_classes_6_17 attendance_prepan_1_5 
 		}
 		
 local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5		
- local variables perdida01 ganancia01 horas0 horas1 workhome lost aumento_domestica toma_dec_gasto0 toma_dec_gasto1 hea2 heal3 hea4 hea9 hea10 /*
+ local variables activo1 activo0 ocu_pea0 ocupado1 ocupado0 ocu0_desoc1 ocu0_inac1 perdida01 ganancia01 horas0 horas1 workhome lost aumento_domestica toma_dec_gasto0 toma_dec_gasto1 hea2 heal3 hea4 hea9 hea10 /*
 		*/  sold_user new_user total_users  
  
 		foreach cut of local cuts{
