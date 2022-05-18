@@ -882,17 +882,9 @@ foreach x in v11_01 v11_02 v11_03 v11_04 v11_06 {
 *
 
 * Percentage of households that report issues with internet connection due to high cost of internet vs. power outages
-cap tab v11_11a 
-gen int_cost =. 
-cap replace int_cost = 0 if v11_11a == 2
-cap replace int_cost = 1 if v11_11a == 1
-la var int_cost "Hogares que reportan problemas con internet debido a alto costo"
+gen int_cost =.
 
-cap tab v11_11c
 gen power_outages =. 
-cap replace power_outages = 0 if v11_11c == 2
-cap replace power_outages = 1 if v11_11c == 1
-la var power_outages "Hogares que reportan problemas con internet debido a cortes de energia"
 
 * Percentage of total, existing users and new users of mobile wallet
 
@@ -909,17 +901,14 @@ la var new_user "Nuevo usuario de mobile wallet durante la pandemia"
 
 gen total_users=. 
 replace total_users = 1 if (old_user == 1 | new_user == 1)
+replace total_users = 0 if (old_user == 0 & new_user == 0)
 la var total_users "Total usuarios de mobile wallet"
 
 * Percentage of respondents who indicate an increase in the use of mobile banking vs. the use of apps/webpage for transactions
 
 gen increase_banking=. 
-cap replace increase_banking = 1 if v11_23 ==1 
-la var increase_banking "Personas que indican un aumento en el uso de mobile banking para transacciones"
 
 gen increase_apps=. 
-cap replace increase_apps = 1 if v11_25 ==1
-la var increase_apps "Personas que indican un aumento en el uso de apps/webpage para transacciones"
 
 
 

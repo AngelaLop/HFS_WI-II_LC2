@@ -906,16 +906,19 @@ la var new_user "Nuevo usuario de mobile wallet durante la pandemia"
 
 gen total_users=. 
 replace total_users = 1 if (old_user == 1 | new_user == 1)
+replace total_users = 0 if (old_user == 0 & new_user == 0)
 la var total_users "Total usuarios de mobile wallet"
 
 * Percentage of respondents who indicate an increase in the use of mobile banking vs. the use of apps/webpage for transactions
 
 gen increase_banking=. 
 replace increase_banking = 1 if u11_23 ==1 
+replace increase_banking = 0 if (u11_23 == 2 | u11_23 == 3)
 la var increase_banking "Personas que indican un aumento en el uso de mobile banking para transacciones"
 
 gen increase_apps=. 
 replace increase_apps = 1 if u11_25 ==1
+replace increase_banking = 0 if (u11_25 == 2 | u11_25 == 3)
 la var increase_apps "Personas que indican un aumento en el uso de apps/webpage para transacciones"
 
 
