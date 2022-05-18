@@ -333,11 +333,7 @@ save `tablas', replace
 			}
 		}
 	
- local cut total 
- local variable pp_attendance 
- local variable1 attendance_prepan_6_17
- local variable2 attendance_6_17
-	
+	}	
 	} 
 	
 	postclose `ptablas1'
