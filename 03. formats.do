@@ -94,7 +94,7 @@ if "`variable'"=="ocupado1"			 		local label "comparable employment"
 if "`variable'"=="ocupado0"			 		local label "Comparable employment UNDP pre-pandemic"
 if "`variable'"=="ocu0_desoc1"			 	local label "Occupied to Unoccupied Transition"
 if "`variable'"=="ocu0_inac1"			 	local label "Occupied to left the labor force"
-
+if "`variable'"=="income_reg_gov_prepand" 	local label "Regular transfers prepandemic"
 
 
 
