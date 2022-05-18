@@ -132,6 +132,21 @@ local cuts total male female primary secondary terciary age_18_24 age_25_54 age_
 		local value = `pan' - `prepan'
 		post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (.) (.)
 
+ local cut total 
+ local variable pp_attendance 
+ local variable1 attendance_prepan_6_17
+ local variable2 attendance_6_17
+ 
+		qui include "$dos\03. formats.do"
+		sum `variable1' [iw=w_hh_ph2w1], meanonly
+		local prepan = r(mean)*100
+		sum `variable2' [iw=w_hh_ph2w1], meanonly
+		local pan = r(mean)*100
+	
+		local value = `pan' - `prepan'
+		post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (.) (.)
+ 		
+		
  local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5
  local variable pp_formal
  local variable1 formal0
@@ -243,6 +258,21 @@ local cuts total male female primary secondary terciary age_18_24 age_25_54 age_
 	
 		local value = `pan' - `prepan'
 		post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (.) (.)
+
+ local cut total 
+ local variable pp_attendance 
+ local variable1 attendance_prepan_6_17
+ local variable2 attendance_6_17
+ 
+		qui include "$dos\03. formats.do"
+		sum `variable1' [iw=w_hh_ph2w2], meanonly
+		local prepan = r(mean)*100
+		sum `variable2' [iw=w_hh_ph2w2], meanonly
+		local pan = r(mean)*100
+	
+		local value = `pan' - `prepan'
+		post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (.) (.)
+ 			
 		
 local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5	
  local variable pp_formal
@@ -302,6 +332,12 @@ save `tablas', replace
 			post `ptablas1' ("LAC_S") ("LAC_S") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`mean_lac') (`numer')  (`denom') 
 			}
 		}
+	
+ local cut total 
+ local variable pp_attendance 
+ local variable1 attendance_prepan_6_17
+ local variable2 attendance_6_17
+	
 	} 
 	
 	postclose `ptablas1'
