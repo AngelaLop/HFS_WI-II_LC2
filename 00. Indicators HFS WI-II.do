@@ -85,7 +85,7 @@ local cuts total urban rural male female primary_hh secondary_hh terciary_hh pub
 		
 
 local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5	
- local variables perdida01 ganancia01 horas0 horas1 workhome lost hea2 heal3 hea4 old_user new_user total_users increase_banking increase_apps
+ local variables perdida01 ganancia01 workhome lost hea2 heal3 hea4 old_user new_user total_users increase_banking increase_apps
 
  
 		foreach cut of local cuts{
@@ -94,6 +94,22 @@ local cuts total male female primary secondary terciary age_18_24 age_25_54 age_
 			include "$dos\03. formats.do"
 			sum `variable' [iw=w_hh_ph2w1] if `cut'==1
 			local value = r(mean)*100
+			local numer = r(sum)
+			local denom = r(sum_w)
+			post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (`numer') (`denom') 
+			}	
+		}	
+
+local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5	
+ local variables horas0 horas1
+
+ 
+		foreach cut of local cuts{
+			foreach variable of local variables {
+		   
+			include "$dos\03. formats.do"
+			sum `variable' [iw=w_hh_ph2w1] if `cut'==1
+			local value = r(mean)
 			local numer = r(sum)
 			local denom = r(sum_w)
 			post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (`numer') (`denom') 
@@ -197,7 +213,7 @@ local variables attendance_6_17 face_to_face_classes_6_17 attendance_prepan_1_5 
 		
 local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5		
  local variables perdida01 ganancia01 horas0 horas1 workhome lost aumento_domestica toma_dec_gasto0 toma_dec_gasto1 hea2 heal3 hea4 hea9 hea10 /*
-		*/ int_cost power_outages old_user new_user total_users increase_banking increase_apps
+		*/ int_cost power_outagesold_user new_user total_users increase_banking increase_apps
  
 		foreach cut of local cuts{
 			foreach variable of local variables {
@@ -210,6 +226,23 @@ local cuts total male female primary secondary terciary age_18_24 age_25_54 age_
 			post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (`numer') (`denom') 
 			}	
 		}	
+		
+local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5	
+ local variables horas0 horas1
+
+		foreach cut of local cuts{
+			foreach variable of local variables {
+		   
+			include "$dos\03. formats.do"
+			sum `variable' [iw=w_hh_ph2w2] if `cut'==1
+			local value = r(mean)
+			local numer = r(sum)
+			local denom = r(sum_w)
+			post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (`numer') (`denom') 
+			}	
+		}	
+		
+*Percentage point change 
 		
 *Percentage point change  
 
@@ -248,14 +281,14 @@ local cuts total male female primary secondary terciary age_18_24 age_25_54 age_
  
  foreach cut of local cuts{
 		qui include "$dos\03. formats.do"
-		sum `variable1' [iw=w_hh_ph2w2], meanonly
+		sum `variable1' [iw=w_hh_ph2w1], meanonly
 		local prepan = r(mean)*100
-		sum `variable2' [iw=w_hh_ph2w2], meanonly
+		sum `variable2' [iw=w_hh_ph2w1], meanonly
 		local pan = r(mean)*100
 	
 		local value = `pan' - `prepan'
 		post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (.) (.)
- }
+
 }
 
 postclose `ptablas'
@@ -279,7 +312,7 @@ save `tablas', replace
 					*/ income_reg_gov_prepand income_reg_gov_pand percep_inseg_violencia aumento_v14_05 aumento_v14_06 attendance_6_17 /*
 					*/ face_to_face_classes_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same regular_CCT /*
 					*/ perdida01 ganancia01 horas0 horas1 workhome lost aumento_domestica toma_dec_gasto0 toma_dec_gasto1 hea2 heal3 hea4 hea9 hea10 /*
-					*/ int_cost power_outages old_user new_user total_users increase_banking increase_apps
+					*/ int_cost power_outage sold_user new_user total_users increase_banking increase_apps
 	
 	local cuts total urban rural male female primary_hh secondary_hh terciary_hh publico1 privado1 mixto1
 	
