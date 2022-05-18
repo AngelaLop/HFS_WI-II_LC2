@@ -538,6 +538,26 @@ lab var workhome "Proporcion horas de trabajo remoto"
 
 *--- SITUACIÓN PREPANDEMIA ---*
 
+/*
+variables a agregar
+Población en la fuerza laboral actual
+activo1
+activo0
+
+Empleo actual comparable PNUD
+ocupado1
+ocupado0
+
+Tasa empleo
+ocu_pea1
+ocu_pea0
+
+Transicion 
+ocu0_desoc1 De ocupado a desocupado
+ocu0_inac1 De ocupado a inactivo
+
+*/
+
 * Ocupación pre pandemia 
 gen 	ocupado0 = u05_16==1 
 replace ocupado0 =. if u05_16==.	// dejamos como missing?
