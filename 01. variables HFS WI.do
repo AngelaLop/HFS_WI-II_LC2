@@ -703,7 +703,7 @@ gen chil_01_05 =.
 * Change in school attendance
 * before the pandemic
 tab1 u08_02 u08_03 u08_05 u08_06 u08_08 u08_10, m
-g attendance_prepan_6_17 = inlist(u08_02,1,2)
+g attendance_prepan_6_17 = cond(inlist(u08_02,1,2),1,0)
 replace attendance_prepan_6_17 = . if u08_02 == 98 | u08_02 == . 
 replace attendance_prepan_6_17 = . if u08_02 == 3 & u07_19 == 6
 
@@ -716,9 +716,15 @@ replace attendance_6_17 = 1 if inlist(u08_10,1,2,15)
 replace attendance_6_17 = . if u08_05 == 98 & u08_08 == 98
 
 * schools offer face to face classes 
-g face_to_face_classes_6_17 = u08_05==1 & attendance_6_17==1
+gen oferta_presencial1 = 0 if attendance_6_17 == 1
+replace oferta_presencial1 = 1 if u08_04 == 1
+replace oferta_presencial1 = . if attendance_6_17 != 1
+
+*8.7.2 Asistencia presencial
+gen face_to_face_classes_6_17 = 0 if attendance_6_17 == 1
+replace face_to_face_classes_6_17 = 1 if u08_05 == 1
+replace face_to_face_classes_6_17 = 1 if u08_10 == 15 
 replace face_to_face_classes_6_17 = . if attendance_6_17 != 1
-replace face_to_face_classes_6_17 = 1 if u08_10 == 15
 
 *Under 5 years old children attending some form of education activities
 g attendance_prepan_1_5 = .

@@ -95,7 +95,7 @@ if "`variable'"=="ocupado0"			 		local label "Comparable employment UNDP pre-pan
 if "`variable'"=="ocu0_desoc1"			 	local label "Occupied to Unoccupied Transition"
 if "`variable'"=="ocu0_inac1"			 	local label "Occupied to left the labor force"
 if "`variable'"=="income_reg_gov_prepand" 	local label "Regular transfers prepandemic"
-
+if "`variable'"=="oferta_presencial1"		local label "Schools that offer face-to-face classes"
 
 
 
@@ -112,6 +112,7 @@ if "`variable'"=="income_reg_gov_pand"    	local module "Income"
 if "`variable'"=="regular_CCT"            	local module "Income"
 if "`variable'"=="attendance_prepan_6_17" 	local module "Education"
 if "`variable'"=="pp_attendance"			local module "Education"
+if "`variable'"=="oferta_presencial1"		local module "Education"
 if "`variable'"=="attendance_6_17" 		  	local module "Education"
 if "`variable'"=="face_to_face_classes_6_17" local module "Education"
 if "`variable'"=="attendance_prepan_1_5"    local module "Education"

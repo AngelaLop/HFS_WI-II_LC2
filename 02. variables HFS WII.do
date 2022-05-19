@@ -648,7 +648,13 @@ gen chil_01_05 =(w_cha_ph2w2 != .) if inrange(v08_16,1,5)
 * Share of school-age children attending some form of education activities (in person or remotely)
 * Change in school attendance
 * before the pandemic
-g attendance_prepan_6_17 = inlist(v08_02,1,2)
+
+gen attendance_prepan_6_17 = cond(inlist(v08_02,1,2),1,0)
+replace attendance_prepan_6_17 = . if v08_02 == 98 | v08_02 == . 
+replace attendance_prepan_6_17 = . if v08_02 == 3 & v07_19 == 6
+
+
+
 replace attendance_prepan_6_17 = . if v08_02 == 98 | v08_02 == . 
 replace attendance_prepan_6_17 = . if v08_02 == 3 & v07_19 == 6
 
@@ -661,9 +667,13 @@ replace attendance_6_17 = 1 if inlist(v08_06,1,17)
 replace attendance_6_17 = 1 if inlist(v08_10,1,2,15)
 replace attendance_6_17 = . if v08_05 == 98 & v08_08 == 98
 * schools offer face to face classes 
-*g face_to_face_classes_6_17 = v08_04==1
-**# Bookmark #1
-gen face_to_face_classes_6_17     = 0 if attendance_6_17 == 1
+* schools offer face to face classes 
+gen oferta_presencial1 = 0 if attendance_6_17 == 1
+replace oferta_presencial1 = 1 if v08_04 == 1
+replace oferta_presencial1 = . if attendance_6_17 != 1
+
+*8.7.2 Asistencia presencial
+gen face_to_face_classes_6_17 = 0 if attendance_6_17 == 1
 replace face_to_face_classes_6_17 = 1 if v08_05 == 1
 replace face_to_face_classes_6_17 = 1 if v08_10 == 15 
 replace face_to_face_classes_6_17 = . if attendance_6_17 != 1

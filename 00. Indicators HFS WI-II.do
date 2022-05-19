@@ -73,7 +73,7 @@ local variables income_red income_eme_gov_pand fs_savings fs_rent_obligations fs
 	}
 	
 local cuts total urban rural male female primary_hh secondary_hh terciary_hh publico1 privado1 mixto1		
- local variables attendance_6_17 face_to_face_classes_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same run_out_food run_out_food_pre_pan 
+ local variables attendance_6_17 attendance_prepan_6_17 oferta_presencial1 face_to_face_classes_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same run_out_food run_out_food_pre_pan 
  
 		foreach cut of local cuts{
 			foreach variable of local variables {
@@ -205,7 +205,7 @@ local variables income_red income_eme_gov_pand fs_savings fs_rent_obligations fs
 	}
 * with cuts 	
 local cuts total urban rural male female primary_hh secondary_hh terciary_hh publico1 privado1 mixto1		
-local variables attendance_6_17 face_to_face_classes_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same run_out_food run_out_food_pre_pan 		
+local variables attendance_6_17 face_to_face_classes_6_17 oferta_presencial1 attendance_prepan_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same run_out_food run_out_food_pre_pan 		
 		foreach cut of local cuts{
 			foreach variable of local variables {
 		    
@@ -318,9 +318,9 @@ save `tablas', replace
 	local cuts total urban rural male female primary_hh secondary_hh terciary_hh publico1 privado1 mixto1
 	local variables income_red income_eme_gov_pand fs_savings fs_rent_obligations fs_new_labor fs_child_labor run_out_food run_out_food_pre_pan /*
 					*/ income_reg_gov_prepand income_reg_gov_pand percep_inseg_violencia aumento_v14_05 aumento_v14_06 attendance_6_17 /*
-					*/ face_to_face_classes_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same regular_CCT /*
+					*/ face_to_face_classes_6_17 attendance_prepan_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same regular_CCT /*
 					*/ perdida01 ganancia01 workhome lost aumento_domestica toma_dec_gasto0 toma_dec_gasto1 hea2 heal3 hea4 hea9 hea10 /*
-					*/ old_user new_user  activo1 activo0 ocu_pea0 ocupado1 ocupado0 ocu0_desoc1 ocu0_inac1
+					*/ old_user new_user  activo1 activo0 ocu_pea0 ocupado1 ocupado0 ocu0_desoc1 ocu0_inac1 oferta_presencial1
 	
 
 	
