@@ -89,7 +89,7 @@ local cuts total urban rural male female primary_hh secondary_hh terciary_hh pub
 		
 
 local cuts total male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5	
- local variables activo1 activo0 ocu_pea0 ocupado1 ocupado0 ocu0_desoc1 ocu0_inac1 perdida01 ganancia01 workhome lost hea2 heal3 hea4 old_user new_user  
+ local variables activo1 activo0 ocu_pea0 ocu_pea1 ocupado1 ocupado0 ocu0_desoc1 ocu0_inac1 perdida01 ganancia01 workhome lost hea2 heal3 hea4 old_user new_user  
 
  
 		foreach cut of local cuts{
