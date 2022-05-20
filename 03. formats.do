@@ -66,8 +66,8 @@ if "`variable'"=="perdida01"				local label "Percentage of people 18+ who lost t
 if "`variable'"=="ganancia01"				local label "Percentage of people 18+ who found employment during the pandemic"
 if "`variable'"=="formal0"					local label "Pre-pandemic formal employment"
 if "`variable'"=="formal1"					local label "Formal employment"
-if "`variable'"=="horas1"					local label "Pre-pandemic Average working hours"
-if "`variable'"=="horas0"					local label "Average working hours"
+if "`variable'"=="horas1"					local label "Average working hours"
+if "`variable'"=="horas0"					local label "Pre-pandemic average working hours"
 if "`variable'"=="workhome"					local label "Proportion of hours of remote work" //comprobar con Angela
 if "`variable'"=="lost"						local label "Job loss in the pandemic"
 if "`variable'"=="aumento_domestica"		local label "Indicator of increase in the time dedicated to some domestic or care task"
