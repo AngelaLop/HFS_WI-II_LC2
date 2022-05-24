@@ -47,6 +47,11 @@ label variable age_25_54 "Aged 25-54 years old"
 g age_55_65 = inrange(u03_03,55,65)
 label variable age_55_65 "Aged 55-65 years old"
 
+* Presencia adultos mayores
+gen		elder = 0 if u07_04 != .
+replace elder = 1 if u07_04 > 0 & u07_04 !=.
+lab val elder yn
+lab var elder "HH with people 65+"
 
 * 3.04 Sexo
 
@@ -659,6 +664,17 @@ local module income
 gen income_red = 0 if u06_17 != 98
 replace income_red = 1 if (u06_17==3)
 label variable income_red "Beginning of 2021"
+
+* income increase
+
+gen income_incr = 0 if u06_17 != 98
+replace income_incr = 1 if (u06_17==1)
+label variable income_red "Beginning of 2021"
+
+* stay the same
+gen income_same = 0 if u06_17 != 98
+replace income_same = 1 if (u06_17==2)
+label variable income_same "Beginning of 2021"
 
 * Percentage of households who received emergency government transfers 
 

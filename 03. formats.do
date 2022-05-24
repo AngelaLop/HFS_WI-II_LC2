@@ -41,7 +41,9 @@ if "`country'" =="767" local name "DOMINICA"
 if "`country'" =="809" local name "REP DOMINICANA"
 if "`country'" =="876" local name "JAMAICA"
 
-if "`variable'"=="income_red" 				local label "Percentage of households who report a reduction of income since the onset of the pandemic"
+if "`variable'"=="income_red" 				local label "Percentage of households who report a reduction of income since w1 onset, w2 begining of 2021"
+if "`variable'"=="income_incr" 				local label "Percentage of households who report a increase of income since w1 onset, w2 begining of 2021"
+if "`variable'"=="income_same" 				local label "Percentage of households who report HH income has remain the same since w1 onset, w2 begining of 2021"
 if "`variable'"=="income_eme_gov_pand"  	local label "Percentage of households who received emergency government transfers "
 if "`variable'"=="fs_savings" 				local label "Percentage of household that since 2021 to cover essential expenses (food, health or education) have been forced to"
 if "`variable'"=="incofs_rent_obligations" 	local label "Percentage of household that since 2021 to cover essential expenses (food, health or education) have been forced to"
@@ -100,6 +102,8 @@ if "`variable'"=="oferta_presencial1"		local label "Schools that offer face-to-f
 
 
 if "`variable'"=="income_red" 				local module "Income"
+if "`variable'"=="income_incr" 				local module "Income"
+if "`variable'"=="income_same" 				local module "Income"
 if "`variable'"=="income_eme_gov_pand"  	local module "Income"
 if "`variable'"=="fs_savings" 				local module "Coping"
 if "`variable'"=="fs_rent_obligations"  	local module "Coping"

@@ -41,7 +41,11 @@ g male   = (v03_04==1)
 
 gen mother_0_5 = (parent_0_5_hh==1) & (female==1)
 label variable mother_0_5 "Mother of children 0-5years old"
-
+* Presencia adultos mayores
+gen		elder = 0 if v07_04 != .
+replace elder = 1 if v07_04 > 0 & v07_04 !=.
+lab val elder yn
+lab var elder "HH with people 65+"
 
 * nivel educativo  
 *tab v03_09a, g(v309_)
@@ -582,6 +586,19 @@ local module income
 gen income_red = 0 if v06_17a != 98
 replace income_red = 1 if (v06_17a==3)
 label variable income_red "Beginning of 2021"
+
+* income increase
+
+gen income_incr = 0 if v06_17 != 98
+replace income_incr = 1 if (v06_17==1)
+label variable income_red "Beginning of 2021"
+
+* stay the same
+gen income_same = 0 if v06_17 != 98
+replace income_same = 1 if (v06_17==2)
+label variable income_same "Beginning of 2021"
+
+
 
 * Percentage of households who received emergency government transfers 
 g income_eme_gov_pand = .

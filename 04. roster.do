@@ -40,6 +40,12 @@ destring folio, replace
 gen  parent_0_5 = (v07_19>=0 & v07_19<=5) & v07_20==1
 egen parent_0_5_hh = max(parent_0_5) , by(folio) 
 
+gen  kid_0_5 = (v07_19>=0 & v07_19<=5) 
+egen kid_0_5_hh = max(kid_0_5) , by(folio) 
+
+gen  kid_6_12 = (v07_19>=6 & v07_19<=12) 
+egen kid_6_12_hh = max(kid_6_12) , by(folio) 
+
 gen  parent_0_12 = (v07_19>=0 & v07_19<=12) & v07_20==1
 egen parent_0_12_hh = max(parent_0_12) , by(folio) 
 
