@@ -616,6 +616,31 @@ replace  horas0 = u05_24 if ocupado0 == 1 & horas0 == .
 replace  horas0 = . if u05_20==. & u05_24==. // REVISAR SI CRITERIO DE MISSING GENERA PROBLEMA DESPUES
 
 
+* Transición de inactivo a activo
+gen inac0_ac1 = .
+replace inac0_ac1 = 1 if condact0 == 3 & inlist(condact1,1,2)
+replace inac0_ac1 = 0 if condact0 == 3 & inlist(condact1,3)
+label var inac0_ac1 "Inactivos que pasaron a activos"
+
+* Transición de inactivo a formal
+gen inac0_formal1 = .
+replace inac0_formal1 = 1 if condact1v2 == 0 & condact0 == 3
+replace inac0_formal1 = 0 if condact0 == 3 & inlist(condact1v2,1,2,3)
+label var inac0_formal1 "Inactivos que pasaron a ocupados formales"
+
+* Transición de inactivo a informal
+gen inac0_informal1 = .
+replace inac0_informal1 = 1 if condact1v2 == 1 & condact0 == 3
+replace inac0_informal1 = 0 if condact0 == 3 & inlist(condact1v2,0,2,3)
+label var inac0_informal1 "Inactivos que pasaron a ocupados informales"
+
+* Transición de inactivo a desocupado
+gen inac0_unemp1 = .
+replace inac0_unemp1 = 1 if condact1v2 == 2 & condact0 == 3
+replace inac0_unemp1 = 0 if condact0 == 3 & inlist(condact1v2,1,0,3)
+label var inac0_unemp1 "Inactivos que pasaron a desempleados"
+
+
 // Completamos variable de w2 para muestra no panel
 
 *clonevar u05_25 = u05_25 if ocupado0 == 1
@@ -631,13 +656,6 @@ replace perdida01 = 0 if ocupado0 == 1
 replace perdida01 = 1 if ocupado0 == 1 & ocupado1 == 0
 lab var perdida01 "Perdida empleo pre pandemia resp. ocupados pre pandemia"
 
-* Ganancia empleo actual vs pre pandemia
-gen ganancia01 = . 
-replace ganancia01 = 1 if ocupado0 == 0 & ocupado1 == 1
-replace ganancia01 = 0 if ocupado0 == 0 & ocupado1 == 0
-replace ganancia01 = 0 if perdida01 == 1
-la var ganancia01 "Ganancia empleo pre pandemia resp. ocupados pre pandemia"
-
 gen		ocu0_desoc1 = .
 replace ocu0_desoc1 = 0 if ocupado0 == 1 
 replace ocu0_desoc1 = 1 if ocupado0 == 1 & desocupado1 == 1
@@ -649,10 +667,45 @@ replace ocu0_inac1 = 1 if ocupado0 == 1 & inactivo1 == 1
 lab var ocu0_inac1 "Del empleo a inactividad"
 lab val perdida01 ocu0_desoc1 ocu0_inac1 yn
 
+* Ganancia empleo actual vs pre pandemia
+gen ganancia01 = . 
+replace ganancia01 = 1 if ocupado0 == 0 & ocupado1 == 1
+replace ganancia01 = 0 if ocupado0 == 0 & ocupado1 == 0
+replace ganancia01 = 0 if perdida01 == 1
+la var ganancia01 "Ganancia empleo pre pandemia resp. ocupados pre pandemia"
+
+gen inac0_ocu1=. 
+replace inac0_ocu1 = 0 if inactivo0 == 1 
+replace inac0_ocu1 = 1 if (inactivo0 == 1 & ocupado1 == 1)
+la var inac0_ocu1 "Ganancia de empleo de inactivo a ocupado"
+
+gen desoc0_ocu1=.
+replace desoc0_ocu1 = 0 if desocupado0 == 1
+replace desoc0_ocu1 = 1 if (desocupado0 == 1 & ocupado1 == 1)
+la var desoc0_ocu1 "Ganancia de empleo de desocupado a ocupado"
+
 * Transición de ocupado formal a informal - ratio respecto a formales pre pandemia
 gen		for0_inf1 = 0 if (ocupado0==1 & ocupado1==1) & formal0==1 
 replace for0_inf1 = 1 if (formal0==1 & formal1==0) & ocupado0==1 & ocupado1==1
 lab var for0_inf1 "Ocupados formales que pasaron a informalidad"
+
+* Activo
+gen act0_formal1=.
+replace act0_formal1 = 0 if activo0 == 1 
+replace act0_formal1 = 1 if (activo0 == 1 & ocupado1 == 1 & formal1 == 1)
+
+gen act0_informal1=.
+replace act0_informal1 = 0 if activo0 == 1 
+replace act0_informal1 = 1 if (activo0 == 1 & ocupado1 == 1 & formal1 == 0)
+
+gen act0_desocupado1=. 
+replace act0_desocupado1 = 0 if activo0 == 1 
+replace act0_desocupado1 = 1 if (activo0 == 1 & desocupado1 == 1)
+
+gen act0_inac1=.
+replace act0_inac1 = 0 if activo0 == 1 
+replace act0_inac1 = 1 if (activo0 == 1 & activo1 == 0)
+
 
 
 *----------2.3.1: Income
@@ -755,6 +808,18 @@ g privado1=.
 g publico1=.
 
 *----------2.6: Gender
+
+gen aumento_dom =.
+replace aumento_dom = 0 if inlist(u09_01,2,3,4)
+replace aumento_dom = 1 if u09_01 == 1
+
+gen aumento_childcare =. 
+replace aumento_childcare = 0 if inlist(u09_02,2,3,4)
+replace aumento_childcare = 1 if u09_03 == 1
+
+gen aumento_acomp =. 
+replace aumento_acomp = 0 if inlist(u09_03,2,3,4)
+replace aumento_acomp = 1 if u09_03 == 1
 
 
 /*
@@ -971,10 +1036,7 @@ replace increase_apps = 1 if u11_25 ==1
 replace increase_banking = 0 if (u11_25 == 2 | u11_25 == 3)
 la var increase_apps "Personas que indican un aumento en el uso de apps/webpage para transacciones"
 
-
-
-
-
+destring folio, replace force
 
 
 
