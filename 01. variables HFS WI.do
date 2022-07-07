@@ -60,6 +60,9 @@ tab u03_04,m
 g female = (u03_04==2)
 g male   = (u03_04==1)
 
+g female_hh = .
+g male_hh   = .
+
 *
 gen mother_0_5 =.
 cap replace mother_0_5 = (parent_0_5_hh==1) & (female==1)
@@ -740,7 +743,70 @@ replace oferta_presencial1 = . if attendance_6_17 != 1
 gen face_to_face_classes_6_17 = 0 if attendance_6_17 == 1
 replace face_to_face_classes_6_17 = 1 if u08_05 == 1
 replace face_to_face_classes_6_17 = 1 if u08_10 == 15 
+replace face_to_face_classes_6_17 = 0 if attendance_6_17 ==0 
 replace face_to_face_classes_6_17 = . if attendance_6_17 != 1
+
+
+
+
+* Asistencia presencial con personas que no asisten
+gen pres_no = 0 if attendance_6_17 == 1 | attendance_6_17 ==0
+replace pres_no = 1 if u08_05 == 1
+replace pres_no = 1 if u08_10 == 15 
+replace pres_no = . if !inlist(attendance_6_17, 1, 0)
+label var pres_no "Asistencia escolar (presencial) durante la pandemia incluyendo a los que no asisten"
+label val pres_no asiste 
+
+
+
+* 8.8.2 Asistencia virtual
+gen virtual1 = 0 if attendance_6_17 == 1
+replace virtual1 = 1 if u08_09a == 1 & u08_08 == 1
+replace virtual1 = . if attendance_6_17 != 1 
+label var virtual1 "Asistencia escolar (virtual) durante la pandemia"
+label val virtual1 asiste 
+
+* Solo Virtual
+gen solo_virtual1 = 0 if attendance_6_17 == 1
+replace solo_virtual1 = 1 if u08_09a == 1 & u08_08 == 1 & face_to_face_classes_6_17 !=1
+replace solo_virtual1 = . if attendance_6_17 != 1 
+label var solo_virtual1 "Asistencia escolar (solo virtual) durante la pandemia"
+label val solo_virtual1 asiste
+
+* Solo Virtual con personas que no asisten 
+gen vir_no = 0 if attendance_6_17 == 1 | attendance_6_17 == 0
+replace vir_no = 1 if u08_09a == 1 & u08_08 == 1 & face_to_face_classes_6_17 !=1
+replace vir_no = . if !inlist(attendance_6_17, 1, 0) 
+label var vir_no "Asistencia escolar (solo virtual) durante la pandemia incluyendo a los que no asisten"
+label val vir_no asiste 
+
+* 8.9 Asistencia virtual y presencial
+gen hibrido1 = 0 if attendance_6_17 == 1
+replace hibrido1 = 1 if virtual1 == 1 | face_to_face_classes_6_17 == 1
+replace hibrido1 = . if attendance_6_17 != 1 
+label var hibrido1 "Asistencia escolar hibrida durante la pandemia"
+label val hibrido1 asiste 
+
+* Solo Hibrido
+gen solo_hibrido1 = 0 if attendance_6_17 == 1
+replace solo_hibrido1 = 1 if virtual1 == 0 & face_to_face_classes_6_17 == 0
+replace solo_hibrido1 = . if attendance_6_17 != 1 
+label var solo_hibrido1 "Asistencia escolar (solo hibrido) durante la pandemia"
+label val solo_hibrido1 asiste 
+
+* Solo hibrido incuyendo a los que no asisten
+gen hib_no = 0 if attendance_6_17 ==1 | attendance_6_17 == 0
+replace hib_no = 1 if solo_hibrido1 == 1
+label var hib_no "Asistencia escolar (solo hibrido) durante la pandemia incluyendo a los que no asisten"
+label val hib_no asiste
+
+* No asiste a nada
+gen asi_no = 0 if attendance_6_17 == 1 | attendance_6_17 == 0
+replace asi_no = 1 if attendance_6_17 == 0
+label var asi_no "No asiste a ninguna de las modalidades"
+label define asiste_no 1 "NO ASISTE" 0 "ASISTE"
+label val asi_no asiste_no
+***
 
 *Under 5 years old children attending some form of education activities
 g attendance_prepan_1_5 = .

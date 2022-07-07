@@ -50,7 +50,7 @@ gen  parent_0_12 = (v07_19>=0 & v07_19<=12) & v07_20==1
 egen parent_0_12_hh = max(parent_0_12) , by(folio) 
 
 keep if id_nna ==1
-keep folio parent_0_5_hh parent_0_12_hh
+keep folio parent_0_5_hh parent_0_12_hh kid_6_12_hh kid_0_5_hh
 
 save "$w2\Roster\hijos\\`country'_PH2W2_RD_hijos", replace 
 }
@@ -67,8 +67,15 @@ egen parent_0_5_hh = max(parent_0_5) , by(folio)
 gen  parent_0_12 = (u07_19>=0 & u07_19<=12) & u07_20==1
 egen parent_0_12_hh = max(parent_0_12) , by(folio) 
 
+
+gen  kid_0_5 = (u07_19>=0 & u07_19<=5) 
+egen kid_0_5_hh = max(kid_0_5) , by(folio) 
+
+gen  kid_6_12 = (u07_19>=6 & u07_19<=12) 
+egen kid_6_12_hh = max(kid_6_12) , by(folio) 
+
 keep if id_nna ==1
-keep folio parent_0_5_hh parent_0_12_hh
+keep folio parent_0_5_hh parent_0_12_hh kid_6_12_hh kid_0_5_hh
 destring folio, replace 
 duplicates drop
 save "$w1\Roster\hijos\\`country'_PH2W1_RD_hijos", replace 

@@ -49,7 +49,7 @@ cap drop _merge
 destring folio, replace 
 cap merge 1:1 folio using "$w1\Roster\hijos\\`country'_PH2W1_RD_hijos", force 
 destring folio, replace 
-cap cap drop _merge 
+cap drop _merge 
 save "$w1\\`country'_PH2W1_CT_Casos", replace 
 qui include "$dos\01. variables HFS WI.do" // gracias por explicarme
 
@@ -72,8 +72,8 @@ local variables income_red income_incr income_same income_eme_gov_pand fs_saving
 		}
 	}
 	
-local cuts total urban rural male female primary_hh secondary_hh terciary_hh publico1 privado1 mixto1 elder kid_0_5_hh kid_6_12_hh	
- local variables attendance_6_17 attendance_prepan_6_17 oferta_presencial1 face_to_face_classes_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same run_out_food run_out_food_pre_pan aumento_v14_05 aumento_v14_06 
+local cuts total urban rural male female female_hh male_hh primary_hh secondary_hh terciary_hh publico1 privado1 mixto1 elder kid_0_5_hh kid_6_12_hh	
+ local variables attendance_6_17 attendance_prepan_6_17 oferta_presencial1 pres_no vir_no hib_no asi_no attendance_prepan_1_5 attendance_1_5 learning_less learning_same run_out_food run_out_food_pre_pan aumento_v14_05 aumento_v14_06 
  
 		foreach cut of local cuts{
 			foreach variable of local variables {
@@ -176,7 +176,7 @@ local cuts total male female primary secondary terciary age_18_24 age_25_54 age_
 local countries 501 502 503 504 505 506 507 509 510 520 540 560 570 591 592 593 595 598 758 767 809 876
 
 foreach country of local countries {
-
+*local country 507
 use "$w2\\`country'_PH2W2_CP_Casos", replace 
 merge 1:1 folio using "$w2\\`country'_PH2W2_CP_Ninos", force 
 drop _merge 
@@ -184,6 +184,8 @@ cap merge 1:1 folio using "$w2\Roster\hijos\\`country'_PH2W2_RD_hijos", force
 drop _merge 
 destring folio, replace 
 merge 1:1 folio using "$w1\\`country'_PH2W1_CT_Casos", keepusing(u04_04 u05* u07* u12* u09_06 u09_08 u09_09)
+cap drop _merge
+merge 1:1 folio using "$w2\\`country'_PH2W2_CP_Ninos05", force 
 qui include "$dos\\02. variables HFS WII.do"
 local wave w2
 
@@ -204,8 +206,8 @@ local variables income_red income_incr income_same income_eme_gov_pand fs_saving
 		}
 	}
 * with cuts 	
-local cuts total urban rural male female primary_hh secondary_hh terciary_hh publico1 privado1 mixto1 elder	kid_0_5_hh kid_6_12_hh
-local variables attendance_6_17 face_to_face_classes_6_17 oferta_presencial1 attendance_prepan_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same run_out_food run_out_food_pre_pan aumento_v14_05 aumento_v14_06 		
+local cuts total urban rural male female female_hh male_hh primary_hh secondary_hh terciary_hh publico1 privado1 mixto1 elder	kid_0_5_hh kid_6_12_hh
+local variables attendance_6_17 pres_no vir_no hib_no asi_no oferta_presencial1 attendance_prepan_6_17 attendance_prepan_1_5 attendance_1_5 learning_less learning_same run_out_food run_out_food_pre_pan aumento_v14_05 aumento_v14_06 		
 		foreach cut of local cuts{
 			foreach variable of local variables {
 		    
@@ -249,8 +251,22 @@ local cuts total male female primary secondary terciary age_18_24 age_25_54 age_
 			}	
 		}	
 		
-*Percentage point change 
-		
+* 0 - 5 years old 
+local cuts total urban rural male female primary_hh secondary_hh terciary_hh publico1 privado1 mixto1 elder	kid_0_5_hh kid_6_12_hh
+local variables attendance_prepan_1_5 attendance_1_5  		
+		foreach cut of local cuts{
+			foreach variable of local variables {
+		    
+			qui include "$dos\03. formats.do"
+			sum `variable' [iw=w_ch05_ph2w2] if `cut'==1
+			local value = r(mean)*100
+			local numer = r(sum)
+			local denom = r(sum_w)
+			post `ptablas' ("`country'") ("`name'") ("`wave'") ("`module'") ("`variable'") ("`label'") ("`cut'") (`value') (`numer') (`denom') 
+			}	
+		}
+
+
 *Percentage point change  
 
  local cut total 
@@ -315,10 +331,10 @@ save `tablas', replace
 	
 	*use `tablas'
     local waves w1 w2 
-	local cuts total urban rural male female primary_hh secondary_hh terciary_hh publico1 privado1 mixto1
+	local cuts total urban rural male female female_hh male_hh primary_hh secondary_hh terciary_hh publico1 privado1 mixto1 elder	kid_0_5_hh kid_6_12_hh
 	local variables income_red income_incr income_same income_eme_gov_pand fs_savings fs_rent_obligations fs_new_labor fs_child_labor /*
 	                */ run_out_food run_out_food_pre_pan income_reg_gov_prepand income_reg_gov_pand percep_inseg_violencia aumento_v14_05 /*
-					*/ aumento_v14_06 attendance_6_17 face_to_face_classes_6_17 attendance_prepan_6_17 attendance_prepan_1_5 attendance_1_5 /*       		    */ learning_less learning_same regular_CCT perdida01 ganancia01 workhome lost aumento_domestica toma_dec_gasto0 toma_dec_gasto1 /* 
+					*/ aumento_v14_06 attendance_6_17 pres_no vir_no hib_no asi_no attendance_prepan_6_17 attendance_prepan_1_5 attendance_1_5 /*       		    */ learning_less learning_same regular_CCT perdida01 ganancia01 workhome lost aumento_domestica toma_dec_gasto0 toma_dec_gasto1 /* 
 					*/ hea2 heal3 hea4 hea9 hea10 old_user new_user  activo1 activo0 ocu_pea0 ocu_pea1 ocupado1 ocupado0 ocu0_desoc1 /*
 					*/ ocu0_inac1 oferta_presencial1
 	
@@ -345,7 +361,7 @@ save `tablas', replace
 		}
 	}
 	local waves w1 w2 
-	local cuts total urban rural male female primary_hh secondary_hh terciary_hh publico1 privado1 mixto1
+	local cuts total urban rural male female primary_hh secondary_hh terciary_hh publico1 privado1 mixto1 
 	local variables horas0 horas1
 	foreach wave of local waves {
 		foreach cut of local cuts {		
