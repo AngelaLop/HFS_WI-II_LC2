@@ -541,6 +541,8 @@ replace  horas0 = v05_24 if ocupado0 == 1 & horas0 == .
 replace  horas0 = . if v05_20==. & v05_24==. // REVISAR SI CRITERIO DE MISSING GENERA PROBLEMA DESPUES
 
 
+
+
 // Completamos variable de w2 para muestra no panel
 *clonevar v05_25_ = v05_25 if ocupado0 == 1
 *replace  v05_25_ = v05_09 if ocupado0 == 1 & v05_25_ == .
@@ -575,10 +577,66 @@ replace ocu0_inac1 = 1 if ocupado0 == 1 & inactivo1 == 1
 lab var ocu0_inac1 "Del empleo a inactividad"
 lab val perdida01 ocu0_desoc1 ocu0_inac1 yn
 
+gen inac0_ocu1=. 
+replace inac0_ocu1 = 0 if inactivo0 == 1 
+replace inac0_ocu1 = 1 if (inactivo0 == 1 & ocupado1 == 1)
+la var inac0_ocu1 "Ganancia de empleo de inactivo a ocupado"
+
+gen desoc0_ocu1=.
+replace desoc0_ocu1 = 0 if desocupado0 == 1
+replace desoc0_ocu1 = 1 if (desocupado0 == 1 & ocupado1 == 1)
+la var desoc0_ocu1 "Ganancia de empleo de desocupado a ocupado"
+
+
 * Transición de ocupado formal a informal - ratio respecto a formales pre pandemia
 gen		for0_inf1 = 0 if (ocupado0==1 & ocupado1==1) & formal0==1 
 replace for0_inf1 = 1 if (formal0==1 & formal1==0) & ocupado0==1 & ocupado1==1
 lab var for0_inf1 "Ocupados formales que pasaron a informalidad"
+
+
+* Transición de inactivo a activo
+gen inac0_ac1 = .
+replace inac0_ac1 = 1 if condact0 == 3 & inlist(condact1,1,2)
+replace inac0_ac1 = 0 if condact0 == 3 & inlist(condact1,3)
+label var inac0_ac1 "Inactivos que pasaron a activos"
+
+* Transición de inactivo a formal
+gen inac0_formal1 = .
+replace inac0_formal1 = 1 if condact1v2 == 0 & condact0 == 3
+replace inac0_formal1 = 0 if condact0 == 3 & inlist(condact1v2,1,2,3)
+label var inac0_formal1 "Inactivos que pasaron a ocupados formales"
+
+* Transición de inactivo a informal
+gen inac0_informal1 = .
+replace inac0_informal1 = 1 if condact1v2 == 1 & condact0 == 3
+replace inac0_informal1 = 0 if condact0 == 3 & inlist(condact1v2,0,2,3)
+label var inac0_informal1 "Inactivos que pasaron a ocupados informales"
+
+* Transición de inactivo a desocupado
+gen inac0_unemp1 = .
+replace inac0_unemp1 = 1 if condact1v2 == 2 & condact0 == 3
+replace inac0_unemp1 = 0 if condact0 == 3 & inlist(condact1v2,1,0,3)
+label var inac0_unemp1 "Inactivos que pasaron a desempleados"
+
+
+* Activo
+gen act0_formal1=.
+replace act0_formal1 = 0 if activo0 == 1 
+replace act0_formal1 = 1 if (activo0 == 1 & ocupado1 == 1 & formal1 == 1)
+
+gen act0_informal1=.
+replace act0_informal1 = 0 if activo0 == 1 
+replace act0_informal1 = 1 if (activo0 == 1 & ocupado1 == 1 & formal1 == 0)
+
+gen act0_desocupado1=. 
+replace act0_desocupado1 = 0 if activo0 == 1 
+replace act0_desocupado1 = 1 if (activo0 == 1 & desocupado1 == 1)
+
+gen act0_inac1=.
+replace act0_inac1 = 0 if activo0 == 1 
+replace act0_inac1 = 1 if (activo0 == 1 & activo1 == 0)
+
+
 
 
 *----------2.3.1: Income
@@ -899,6 +957,20 @@ replace toma_dec_gasto1 = 0 if inlist(v09_08b,2,3,4)
 label var toma_dec_gasto1 "Indicador de si es la persona que principalmente toma las decisiones de gasto actualmente"
 label val toma_dec_gasto1 yn
 
+
+gen aumento_dom =.
+replace aumento_dom = 0 if inlist(v09_11,2,3,4)
+replace aumento_dom = 1 if v09_11 == 1
+
+gen aumento_childcare =. 
+replace aumento_childcare = 0 if inlist(v09_12,2,3,4)
+replace aumento_childcare = 1 if v09_12 == 1
+
+gen aumento_acomp =. 
+replace aumento_acomp = 0 if inlist(v09_13,2,3,4)
+replace aumento_acomp = 1 if v09_13 == 1
+
+
 *----------2.7: Health
 
 * hea1. Proporción de hogares en los que algún miembro necesitó un servicio de salud 
@@ -1008,6 +1080,7 @@ gen increase_banking=.
 gen increase_apps=. 
 
 
+destring folio, replace force
 
 
 	
