@@ -529,6 +529,12 @@ replace formal0 = 1 if v05_22 == 1 & ocupado0 == 1
 replace formal0 = . if v05_18==. & v05_22==.	// dejar como missing?
 lab val formal0 yn
 
+* Empleo informal pre pandemia
+gen		informal0 = 0 if ocupado0 == 1 
+replace informal0 = 1 if formal0==0 & ocupado0 == 1
+replace informal0 = . if formal0==. // dejar como missing?
+
+
 * Condición de actividad pre pandemia con informalidad
 gen condact0v2 = condact0
 replace condact0v2 = 0 if condact0 == 1 & formal0 == 1

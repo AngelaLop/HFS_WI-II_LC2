@@ -17,7 +17,7 @@ Output:
 ==================================================*/
 drop _all
  
-/*
+
 
 global path "C:\Users\WB585318\WBG\Javier Romero - Panama\HFPS\LC2 presentation Ph2w2"
 global data "$path\data"
@@ -26,8 +26,8 @@ global results "$path\results"
 global w1 	"$data\Wave 1"
 global w2 	"$data\Wave 2"
 
-*/
 
+/*
 global path "/Users/nicolas/Dropbox/World Bank/HFS"
 global data "$path/data"
 global dos "/Users/nicolas/Dropbox/Mac/Documents/GitHub/HFS_WI-II_LC2"
@@ -35,7 +35,7 @@ global results "$data/results"
 global w1 "$data/Wave 1"
 global w2 "$data/Wave 2"
 set more off
-
+*/
 
 
 *preserve				
@@ -103,7 +103,7 @@ local cuts total urban rural male female primary_hh secondary_hh terciary_hh pub
 		}
 		
 
-local cuts total urban rural male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5	
+local cuts total urban rural male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5 formal0 informal0	
  local variables activo1 activo0 ocu_pea0 ocu_pea1 ocupado1 ocupado0 ocu0_desoc1 ocu0_inac1 inac0_ocu1 desoc0_ocu1 perdida01 ganancia01 workhome lost hea2 heal3 hea4 old_user new_user formal0 formal1 act0_formal1 act0_informal1 act0_desocupado1 act0_inac1 inac0_ac1 inac0_formal1 inac0_informal1 inac0_unemp1 aumento_dom aumento_childcare aumento_acomp
 
  
@@ -193,8 +193,8 @@ local countries 501 502 503 504 505 506 507 509 510 520 540 560 570 591 592 593 
 foreach country of local countries {
 
 *local country 507
-use "$w2\\`country'_PH2W2_CP_Casos", replace 
-merge 1:1 folio using "$w2\\`country'_PH2W2_CP_Ninos", force 
+use "$w2//`country'_PH2W2_CP_Casos", replace 
+merge 1:1 folio using "$w2//`country'_PH2W2_CP_Ninos", force 
 
 drop _merge 
 cap merge 1:1 folio using "$w2/Roster/hijos/`country'_PH2W2_RD_hijos", force 
@@ -239,7 +239,7 @@ local variables attendance_6_17 face_to_face_classes_6_17 oferta_presencial1 att
 			}	
 		}
 		
-local cuts total urban rural male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5		
+local cuts total urban rural male female primary secondary terciary age_18_24 age_25_54 age_55_65 mother_0_5 formal0 informal0		
  local variables activo1 activo0 ocu_pea0 ocu_pea1 ocupado1 ocupado0 ocu0_desoc1 ocu0_inac1 inac0_ocu1 desoc0_ocu1 perdida01 ganancia01 workhome lost aumento_dom aumento_childcare aumento_acomp toma_dec_gasto0 toma_dec_gasto1 hea2 heal3 hea4 hea9 hea10  /*
 		*/  old_user new_user formal0 formal1 act0_formal1 act0_informal1 act0_desocupado1 act0_inac1 inac0_ac1 inac0_formal1 inac0_informal1 inac0_unemp1
  
@@ -338,7 +338,7 @@ save `tablas', replace
 	*use `tablas'
     local waves w1 w2 
 
-	local cuts total urban rural male female female_hh male_hh primary_hh secondary_hh terciary_hh publico1 privado1 mixto1 elder	kid_0_5_hh kid_6_12_hh
+	local cuts total urban rural male female female_hh male_hh primary_hh secondary_hh terciary_hh publico1 privado1 mixto1 elder kid_0_5_hh kid_6_12_hh formal0 informal0
 	local variables income_red income_incr income_same income_eme_gov_pand fs_savings fs_rent_obligations fs_new_labor fs_child_labor /*
 	                */ run_out_food run_out_food_pre_pan income_reg_gov_prepand income_reg_gov_pand percep_inseg_violencia aumento_v14_05 /*
 					*/ aumento_v14_06 attendance_6_17 pres_no vir_no hib_no asi_no attendance_prepan_6_17 attendance_prepan_1_5 attendance_1_5 /*       		    */ learning_less learning_same regular_CCT perdida01 ganancia01 workhome lost aumento_domestica toma_dec_gasto0 toma_dec_gasto1 /* 
